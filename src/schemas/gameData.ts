@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const ParticipantSchema = z
+export const GameData = z
 	.object({
 		allInPings: z.number(),
 		assistMePings: z.number(),

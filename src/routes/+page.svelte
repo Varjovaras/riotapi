@@ -1,29 +1,50 @@
 <script lang="ts">
-	import { API_KEY, NAME, TAG } from '$env/static/private';
+	import { PUBLIC_API_KEY, PUBLIC_NAME, PUBLIC_TAG } from '$env/static/public';
 	import { z } from 'zod';
-	import { ParticipantSchema } from '../schemas/participantSchema';
+	import { GameData } from '../schemas/gameData';
 
 	type ParticipantIds = String[];
-	type Participants = z.infer<typeof ParticipantSchema>;
+	type GameData = z.infer<typeof GameData>;
 
-	let accountApi = `https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${NAME}/${TAG}?api_key=${API_KEY}`;
-	let matchv5Api = `https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_6727822954?api_key=${API_KEY}`;
+	let name = '';
+	let apiKey = '';
+	let tag = '';
 
-	async function fetchMatchApi() {
-		const response = await fetch(matchv5Api);
+	let accountApi = `https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${PUBLIC_NAME}/${PUBLIC_TAG}?api_key=${PUBLIC_API_KEY}`;
+	let matchv5Api = `https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_6727822954?api_key=${PUBLIC_API_KEY}`;
+
+	let playerStats: GameData = [];
+	let playerIds: ParticipantIds = [];
+	$: missingPings = playerStats.map((participant) => participant.enemyMissingPings);
+	$: totalMissingPings = playerStats
+		.map((participant) => participant.enemyMissingPings)
+		.reduce((total, pings) => total + pings, 0);
+
+	async function fetchAccountApi() {
+		const response = await fetch(accountApi);
 		const data = await response.json();
 		const participantIds: ParticipantIds = z.array(z.string()).parse(data.metadata.participants);
 
-		const participants: Participants = ParticipantSchema.parse(data.info.participants);
+		const participants: GameData = GameData.parse(data.info.participants);
 
 		return {
 			participantIds,
 			participants
 		};
 	}
+
+	async function fetchMatchApi() {
+		const response = await fetch(matchv5Api);
+		const data = await response.json();
+		const participantIds: ParticipantIds = z.array(z.string()).parse(data.metadata.participants);
+
+		const participants: GameData = GameData.parse(data.info.participants);
+		playerStats = participants;
+		playerIds = participantIds;
+	}
 </script>
 
 <!-- <h1>{puuid}</h1> -->
-<button on:click={() => {}}>Fetch Matchv5 API</button>
+<button on:click={fetchMatchApi}>Fetch Matchv5 API</button>
 
-<div>123</div>
+<div>total missing pings: {totalMissingPings}</div>
