@@ -6,11 +6,10 @@
 	type ParticipantIds = String[];
 
 	let name = '';
-	let apiKey = '';
 	let tag = '';
 
-	let accountApi = `https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${PUBLIC_NAME}/${PUBLIC_TAG}?api_key=${PUBLIC_API_KEY}`;
-	let matchv5Api = `https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_6727822954?api_key=${PUBLIC_API_KEY}`;
+	const accountApi = `https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${name}/${tag}?api_key=${PUBLIC_API_KEY}`;
+	const matchv5Api = `https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_6727822954?api_key=${PUBLIC_API_KEY}`;
 
 	let playerStats: GameData = [];
 	let playerIds: ParticipantIds = [];
@@ -70,12 +69,39 @@
 	}
 </script>
 
-<!-- <h1>{puuid}</h1> -->
 <div class="flex flex-col items-center justify-center min-h-screen py-2">
-	<button
-		class="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl"
-		on:click={fetchMatchApi}>Fetch Matchv5 API</button
-	>
+	<form class="shadow-md rounded px-8 pt-6 pb-8 mb-4">
+		<div class="mb-4">
+			<label class="block text-gray-700 text-sm font-bold mb-2" for="Summoner name">
+				Summoner name
+			</label>
+			<input
+				class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+				id="username"
+				type="text"
+				placeholder="Summoner name"
+				bind:value={name}
+			/>
+		</div>
+		<div class="mb-6">
+			<label class="block text-gray-700 text-sm font-bold mb-2" for="tag"> tag </label>
+			<input
+				class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+				id="tag"
+				type="text"
+				placeholder="Riot id # tag"
+			/>
+			<p class="text-red-500 text-xs italic">For example: Hide on Bush #420</p>
+		</div>
+		<button
+			class="bg-white w-full hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+			type="button"
+			on:click={fetchMatchApi}
+		>
+			Fetch match details
+		</button>
+	</form>
+
 	<div>total basic pings: {totalBasicPings}</div>
 	<div>total missing pings: {totalMissingPings}</div>
 	<div>total danger pings: {totalDangerPings}</div>
