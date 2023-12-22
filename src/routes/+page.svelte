@@ -46,13 +46,13 @@
 </script>
 
 <!-- <h1>{puuid}</h1> -->
-<button on:click={fetchMatchApi}>Fetch Matchv5 API</button>
+<button class="" on:click={fetchMatchApi}>Fetch Matchv5 API</button>
 
 <div>total missing pings: {totalMissingPings}</div>
-<!-- <h1 class="text-3xl font-bold underline">Hello world!</h1> -->
+<h1 class="text-3xl font-bold underline">Hello world!</h1>
 
-<!-- <style lang="postcss">
+<style lang="postcss">
 	:global(html) {
-		background-color: theme(colors.gray.100);
+		background-color: theme(colors.gray.300);
 	}
-</style> -->
+</style>
