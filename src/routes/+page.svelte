@@ -15,6 +15,7 @@
 
 	let playerStats: GameData = [];
 	let playerIds: ParticipantIds = [];
+
 	$: missingPings = playerStats.map((participant) => participant.enemyMissingPings);
 	$: totalMissingPings = playerStats
 		.map((participant) => participant.enemyMissingPings)
@@ -48,3 +49,10 @@
 <button on:click={fetchMatchApi}>Fetch Matchv5 API</button>
 
 <div>total missing pings: {totalMissingPings}</div>
+<!-- <h1 class="text-3xl font-bold underline">Hello world!</h1> -->
+
+<!-- <style lang="postcss">
+	:global(html) {
+		background-color: theme(colors.gray.100);
+	}
+</style> -->
