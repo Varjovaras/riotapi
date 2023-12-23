@@ -1,6 +1,6 @@
 import type { z } from 'zod';
-import type { PlayerDataSchema } from '../../schemas/playerDataSchema';
-import type { GameDataSchema } from '../../schemas/gameDataSchema';
+import type { PlayerDataSchema } from '../schemas/playerDataSchema';
+import type { GameDataSchema } from '../schemas/gameDataSchema';
 
 export type Ping =
 	| 'enemyMissingPings'

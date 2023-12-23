@@ -1,19 +1,19 @@
 {
-  "name": "rito",
-  "module": "index.ts",
-  "type": "module",
-  "scripts": {
-    "build": "tsc",
-    "front": "cd frontend && bun dev",
-    "back": "cd backend && bun dev"
-  },
-  "devDependencies": {
-    "bun-types": "^1.0.19"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "zod": "^3.22.4"
-  }
+	"name": "rito",
+	"module": "index.ts",
+	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"front": "cd frontend && bun dev",
+		"back": "cd backend && bun dev"
+	},
+	"devDependencies": {
+		"bun-types": "^1.0.19"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"zod": "^3.22.4"
+	}
 }

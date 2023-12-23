@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { PUBLIC_API_KEY, PUBLIC_NAME, PUBLIC_TAG } from '$env/static/public';
 	import { z } from 'zod';
-	import type { GameData, ParticipantIds, Ping } from '../../types/types';
-	import { GameDataSchema } from '../../schemas/gameDataSchema';
+	import type { GameData, ParticipantIds, Ping } from '../types/types';
+	import { GameDataSchema } from '../schemas/gameDataSchema';
 
 	let name = '';
 	let tag = '';
