@@ -1,6 +1,7 @@
 import type { z } from 'zod';
 import type { playerDataSchema } from '../schemas/playerDataSchema';
 import type { gameDataSchema } from '../schemas/gameDataSchema';
+import type { participantIdArraySchema } from '../schemas/participantIdArraySchema';
 
 export type Ping =
 	| 'enemyMissingPings'
@@ -13,7 +14,7 @@ export type Ping =
 	| 'assistMePings'
 	| 'pushPings';
 
-export type ParticipantIds = String[];
+export type ParticipantIdArray = z.infer<typeof participantIdArraySchema>;
 
 export type PlayerData = z.infer<typeof playerDataSchema>;
 export type GameData = z.infer<typeof gameDataSchema>;

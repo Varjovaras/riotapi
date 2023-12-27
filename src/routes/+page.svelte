@@ -1,24 +1,24 @@
 <script lang="ts">
 	import { z } from 'zod';
-	import type { GameData, ParticipantIds, Ping } from '../types/types';
+	import type { GameData, ParticipantIdArray, Ping } from '../types/types';
 	import { gameDataSchema } from '../schemas/gameDataSchema';
+	import { participantIdArraySchema } from '../schemas/participantIdArraySchema';
 
 	const ACCOUNT_API = '/api/account';
 	const MATCH_API = `/api/match/`;
 
-	let name = '';
-	let tag = '';
+	let riotIdName = '';
+	let riotIdTag = '';
+	let puuid = '';
 
 	let playerStats: GameData = [];
-	let playerIds: ParticipantIds = [];
-	let puuId = '';
+	let playerIds: ParticipantIdArray = [];
 
 	function calculateTotalPings(playerStats: GameData, pingType: Ping): number {
 		return playerStats
 			.map((participant) => participant[pingType])
 			.reduce((total, pings) => total + pings, 0);
 	}
-
 	$: totalMissingPings = calculateTotalPings(playerStats, 'enemyMissingPings');
 	$: totalBasicPings = calculateTotalPings(playerStats, 'basicPings');
 	$: totalDangerPings = calculateTotalPings(playerStats, 'dangerPings');
@@ -29,27 +29,28 @@
 	$: totalAssistMePings = calculateTotalPings(playerStats, 'assistMePings');
 	$: totalPushPings = calculateTotalPings(playerStats, 'pushPings');
 
+	async function fetchAccountApi() {
+		const response = await fetch(`${ACCOUNT_API}?name=${riotIdName}&tag=${riotIdTag}`);
+		const data = await response.json();
+		console.log(data);
+		const puuidFromServer = z.string().parse(data);
+		puuid = puuidFromServer;
+	}
+
 	async function fetchMatchApi() {
 		//example match
 		const matchId = 'EUW1_6727822954';
 		const response = await fetch(`${MATCH_API}?match=${matchId}`);
 		const data = await response.json();
-		console.log(data);
-		const gameData: GameData = gameDataSchema.parse(data);
+		const gameData = gameDataSchema.parse(data.gameData);
+		const playerIdsFromServer = participantIdArraySchema.parse(data.participantIds);
 		playerStats = gameData;
-	}
-
-	async function fetchAccountApi() {
-		const response = await fetch(ACCOUNT_API);
-		const data = await response.json();
-		console.log(data);
-		const dataString = z.string().parse(data.puuid);
-		return dataString;
+		playerIds = playerIdsFromServer;
 	}
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center py-2">
-	<form class="mb-4 rounded px-8 pb-8 pt-6 shadow-md">
+	<div class="mb-4 rounded px-8 pb-8 pt-6 shadow-md">
 		<div class="mb-4">
 			<label class="mb-2 block text-sm font-bold text-gray-700" for="Summoner name">
 				Summoner name
@@ -59,7 +60,7 @@
 				id="username"
 				type="text"
 				placeholder="Summoner name"
-				bind:value={name}
+				bind:value={riotIdName}
 			/>
 		</div>
 		<div class="mb-6">
@@ -69,6 +70,7 @@
 				id="tag"
 				type="text"
 				placeholder="Riot id # tag"
+				bind:value={riotIdTag}
 			/>
 			<p class="text-xs italic text-red-500">For example: Hide on Bush #420</p>
 		</div>
@@ -89,10 +91,10 @@
 		>
 			Fetch match details
 		</button>
-	</form>
+	</div>
 
-	{#if puuId}
-		<div>puuid: {puuId}</div>
+	{#if puuid}
+		<div>puuid: {puuid}</div>
 	{/if}
 	<div>total basic pings: {totalBasicPings}</div>
 	<div>total missing pings: {totalMissingPings}</div>
