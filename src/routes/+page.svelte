@@ -14,33 +14,21 @@
 	let playerIds: ParticipantIds = [];
 	let puuId = '';
 
-	$: totalMissingPings = playerStats
-		.map((participant) => participant.enemyMissingPings)
-		.reduce((total, pings) => total + pings, 0);
-	$: totalBasicPings = playerStats
-		.map((participant) => participant.basicPings)
-		.reduce((total, pings) => total + pings, 0);
-	$: totalDangerPings = playerStats
-		.map((participant) => participant.dangerPings)
-		.reduce((total, pings) => total + pings, 0);
-	$: totalAllInPings = playerStats
-		.map((participant) => participant.allInPings)
-		.reduce((total, pings) => total + pings, 0);
-	$: totalGetBackPings = playerStats
-		.map((participant) => participant.getBackPings)
-		.reduce((total, pings) => total + pings, 0);
-	$: totalNeedVisionPings = playerStats
-		.map((participant) => participant.needVisionPings)
-		.reduce((total, pings) => total + pings, 0);
-	$: totalOnMyWayPings = playerStats
-		.map((participant) => participant.onMyWayPings)
-		.reduce((total, pings) => total + pings, 0);
-	$: totalAssistMePings = playerStats
-		.map((participant) => participant.assistMePings)
-		.reduce((total, pings) => total + pings, 0);
-	$: totalPushPings = playerStats
-		.map((participant) => participant.pushPings)
-		.reduce((total, pings) => total + pings, 0);
+	function calculateTotalPings(playerStats: GameData, pingType: Ping): number {
+		return playerStats
+			.map((participant) => participant[pingType])
+			.reduce((total, pings) => total + pings, 0);
+	}
+
+	$: totalMissingPings = calculateTotalPings(playerStats, 'enemyMissingPings');
+	$: totalBasicPings = calculateTotalPings(playerStats, 'basicPings');
+	$: totalDangerPings = calculateTotalPings(playerStats, 'dangerPings');
+	$: totalAllInPings = calculateTotalPings(playerStats, 'allInPings');
+	$: totalGetBackPings = calculateTotalPings(playerStats, 'getBackPings');
+	$: totalNeedVisionPings = calculateTotalPings(playerStats, 'needVisionPings');
+	$: totalOnMyWayPings = calculateTotalPings(playerStats, 'onMyWayPings');
+	$: totalAssistMePings = calculateTotalPings(playerStats, 'assistMePings');
+	$: totalPushPings = calculateTotalPings(playerStats, 'pushPings');
 
 	async function fetchMatchApi() {
 		//example match
