@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { PUBLIC_API_KEY, PUBLIC_NAME, PUBLIC_TAG } from '$env/static/public';
 	import { z } from 'zod';
 	import type { GameData, ParticipantIds, Ping } from '../types/types';
-	import { GameDataSchema } from '../schemas/gameDataSchema';
+	// import { GameDataSchema } from '../schemas/gameDataSchema';
+
+	const ACCOUNT_API = '/api/account';
+	const MATCH_API = '/api/match';
 
 	let name = '';
 	let tag = '';
 
-	const matchv5Api = `https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_6727822954?api_key=${PUBLIC_API_KEY}`;
-	const accountApi = `https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/fentanyl420/420?api_key=${PUBLIC_API_KEY}}`;
 	let playerStats: GameData = [];
 
 	let playerIds: ParticipantIds = [];
@@ -30,25 +30,18 @@
 	$: totalAssistMePings = getTotalPings('assistMePings');
 	$: totalPushPings = getTotalPings('pushPings');
 
-	// const ali = (num: number) => {};
+	async function fetchMatchApi() {
+		const response = await fetch(MATCH_API);
+		const data = await response.json();
+		console.log(data.status);
+	}
 
 	async function fetchAccountApi() {
-		const response = await fetch(accountApi);
+		const response = await fetch(ACCOUNT_API);
 		const data = await response.json();
 		console.log(data);
 		const dataString = z.string().parse(data.puuid);
 		return dataString;
-	}
-
-	async function fetchMatchApi() {
-		const response = await fetch(matchv5Api);
-		const data = await response.json();
-		const participantIds: ParticipantIds = z.array(z.string()).parse(data.metadata.participants);
-
-		const participants: GameData = GameDataSchema.parse(data.info.participants);
-		playerStats = participants;
-		// PlayerDataSchema;
-		playerIds = participantIds;
 	}
 </script>
 
