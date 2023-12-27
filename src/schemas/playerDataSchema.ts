@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PlayerDataSchema = z.object({
+export const playerDataSchema = z.object({
 	allInPings: z.number(),
 	assistMePings: z.number(),
 	assists: z.number(),

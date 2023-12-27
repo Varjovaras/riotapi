@@ -1,4 +1,3 @@
-import type { z } from 'zod';
-import { PlayerDataSchema } from './playerDataSchema';
+import { playerDataSchema } from './playerDataSchema';
 
-export const GameDataSchema = PlayerDataSchema.array();
+export const gameDataSchema = playerDataSchema.array();

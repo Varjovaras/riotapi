@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { z } from 'zod';
 	import type { GameData, ParticipantIds, Ping } from '../types/types';
-	// import { GameDataSchema } from '../schemas/gameDataSchema';
+	import { gameDataSchema } from '../schemas/gameDataSchema';
 
 	const ACCOUNT_API = '/api/account';
-	const MATCH_API = '/api/match';
+	const MATCH_API = `/api/match/`;
 
 	let name = '';
 	let tag = '';
@@ -14,26 +14,42 @@
 	let playerIds: ParticipantIds = [];
 	let puuId = '';
 
-	const getTotalPings = (type: Ping) => {
-		return playerStats
-			.map((participant) => participant[type])
-			.reduce((total, pings) => total + pings, 0);
-	};
-
-	$: totalMissingPings = getTotalPings('enemyMissingPings');
-	$: totalBasicPings = getTotalPings('basicPings');
-	$: totalDangerPings = getTotalPings('dangerPings');
-	$: totalAllInPings = getTotalPings('allInPings');
-	$: totalGetBackPings = getTotalPings('getBackPings');
-	$: totalNeedVisionPings = getTotalPings('needVisionPings');
-	$: totalOnMyWayPings = getTotalPings('onMyWayPings');
-	$: totalAssistMePings = getTotalPings('assistMePings');
-	$: totalPushPings = getTotalPings('pushPings');
+	$: totalMissingPings = playerStats
+		.map((participant) => participant.enemyMissingPings)
+		.reduce((total, pings) => total + pings, 0);
+	$: totalBasicPings = playerStats
+		.map((participant) => participant.basicPings)
+		.reduce((total, pings) => total + pings, 0);
+	$: totalDangerPings = playerStats
+		.map((participant) => participant.dangerPings)
+		.reduce((total, pings) => total + pings, 0);
+	$: totalAllInPings = playerStats
+		.map((participant) => participant.allInPings)
+		.reduce((total, pings) => total + pings, 0);
+	$: totalGetBackPings = playerStats
+		.map((participant) => participant.getBackPings)
+		.reduce((total, pings) => total + pings, 0);
+	$: totalNeedVisionPings = playerStats
+		.map((participant) => participant.needVisionPings)
+		.reduce((total, pings) => total + pings, 0);
+	$: totalOnMyWayPings = playerStats
+		.map((participant) => participant.onMyWayPings)
+		.reduce((total, pings) => total + pings, 0);
+	$: totalAssistMePings = playerStats
+		.map((participant) => participant.assistMePings)
+		.reduce((total, pings) => total + pings, 0);
+	$: totalPushPings = playerStats
+		.map((participant) => participant.pushPings)
+		.reduce((total, pings) => total + pings, 0);
 
 	async function fetchMatchApi() {
-		const response = await fetch(MATCH_API);
+		//example match
+		const matchId = 'EUW1_6727822954';
+		const response = await fetch(`${MATCH_API}?match=${matchId}`);
 		const data = await response.json();
-		console.log(data.status);
+		console.log(data);
+		const gameData: GameData = gameDataSchema.parse(data);
+		playerStats = gameData;
 	}
 
 	async function fetchAccountApi() {
