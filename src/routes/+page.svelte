@@ -10,7 +10,6 @@
 	let tag = '';
 
 	let playerStats: GameData = [];
-
 	let playerIds: ParticipantIds = [];
 	let puuId = '';
 
@@ -73,26 +72,28 @@
 			/>
 			<p class="text-xs italic text-red-500">For example: Hide on Bush #420</p>
 		</div>
+
 		<button
-			class="w-full rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
-			type="button"
-			on:click={fetchMatchApi}
-		>
-			Fetch match details
-		</button>
-		<button
-			class="w-full rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
+			class="mb-2 w-full rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
 			type="button"
 			on:click={fetchAccountApi}
 		>
 			Fetch account details
+		</button>
+
+		<div class="mb-4">todo match details</div>
+		<button
+			class="w-full rounded border border-gray-400 bg-white px-8 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
+			type="button"
+			on:click={fetchMatchApi}
+		>
+			Fetch match details
 		</button>
 	</form>
 
 	{#if puuId}
 		<div>puuid: {puuId}</div>
 	{/if}
-
 	<div>total basic pings: {totalBasicPings}</div>
 	<div>total missing pings: {totalMissingPings}</div>
 	<div>total danger pings: {totalDangerPings}</div>
