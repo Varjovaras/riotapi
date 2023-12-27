@@ -16,5 +16,5 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 	const puuid = z.string().parse(data.puuid);
 	console.log(puuid);
 
-	return new Response(puuid);
+	return new Response(JSON.stringify(puuid));
 };

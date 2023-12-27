@@ -31,8 +31,8 @@
 
 	async function fetchAccountApi() {
 		const response = await fetch(`${ACCOUNT_API}?name=${riotIdName}&tag=${riotIdTag}`);
+
 		const data = await response.json();
-		console.log(data);
 		const puuidFromServer = z.string().parse(data);
 		puuid = puuidFromServer;
 	}
