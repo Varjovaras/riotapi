@@ -5,13 +5,16 @@
 	import { participantIdArraySchema } from '../schemas/participantIdArraySchema';
 
 	const ACCOUNT_API = '/api/account';
-	const MATCH_API = `/api/match/`;
+	const MATCH_API = `/api/matches/`;
+	const MATCHES_BY_PUUID_API = `/api/matches-by-puuid/`;
 
 	let riotIdName = '';
 	let riotIdTag = '';
 	let puuid = '';
+	let matchId = '';
+	let latestMatches: string[] = [];
 
-	let playerStats: GameData = [];
+	let gameData: GameData = [];
 	let playerIds: ParticipantIdArray = [];
 
 	function calculateTotalPings(playerStats: GameData, pingType: Ping): number {
@@ -19,32 +22,38 @@
 			.map((participant) => participant[pingType])
 			.reduce((total, pings) => total + pings, 0);
 	}
-	$: totalMissingPings = calculateTotalPings(playerStats, 'enemyMissingPings');
-	$: totalBasicPings = calculateTotalPings(playerStats, 'basicPings');
-	$: totalDangerPings = calculateTotalPings(playerStats, 'dangerPings');
-	$: totalAllInPings = calculateTotalPings(playerStats, 'allInPings');
-	$: totalGetBackPings = calculateTotalPings(playerStats, 'getBackPings');
-	$: totalNeedVisionPings = calculateTotalPings(playerStats, 'needVisionPings');
-	$: totalOnMyWayPings = calculateTotalPings(playerStats, 'onMyWayPings');
-	$: totalAssistMePings = calculateTotalPings(playerStats, 'assistMePings');
-	$: totalPushPings = calculateTotalPings(playerStats, 'pushPings');
+	$: totalMissingPings = calculateTotalPings(gameData, 'enemyMissingPings');
+	$: totalBasicPings = calculateTotalPings(gameData, 'basicPings');
+	$: totalDangerPings = calculateTotalPings(gameData, 'dangerPings');
+	$: totalAllInPings = calculateTotalPings(gameData, 'allInPings');
+	$: totalGetBackPings = calculateTotalPings(gameData, 'getBackPings');
+	$: totalNeedVisionPings = calculateTotalPings(gameData, 'needVisionPings');
+	$: totalOnMyWayPings = calculateTotalPings(gameData, 'onMyWayPings');
+	$: totalAssistMePings = calculateTotalPings(gameData, 'assistMePings');
+	$: totalPushPings = calculateTotalPings(gameData, 'pushPings');
 
 	async function fetchAccountApi() {
 		const response = await fetch(`${ACCOUNT_API}?name=${riotIdName}&tag=${riotIdTag}`);
-
 		const data = await response.json();
 		const puuidFromServer = z.string().parse(data);
 		puuid = puuidFromServer;
+		await fetchListOfMatchIds();
+	}
+
+	async function fetchListOfMatchIds() {
+		const response = await fetch(`${MATCHES_BY_PUUID_API}?puuid=${puuid}`);
+		const data = await response.json();
+		const matches = z.array(z.string()).parse(data);
+		latestMatches = matches;
+		matchId = matches[0];
 	}
 
 	async function fetchMatchApi() {
-		//example match
-		const matchId = 'EUW1_6727822954';
 		const response = await fetch(`${MATCH_API}?match=${matchId}`);
 		const data = await response.json();
-		const gameData = gameDataSchema.parse(data.gameData);
+		const gameDataFromServer = gameDataSchema.parse(data.gameData);
 		const playerIdsFromServer = participantIdArraySchema.parse(data.participantIds);
-		playerStats = gameData;
+		gameData = gameDataFromServer;
 		playerIds = playerIdsFromServer;
 	}
 </script>
@@ -82,27 +91,33 @@
 		>
 			Fetch account details
 		</button>
-
-		<div class="mb-4">todo match details</div>
-		<button
-			class="w-full rounded border border-gray-400 bg-white px-8 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
-			type="button"
-			on:click={fetchMatchApi}
-		>
-			Fetch match details
-		</button>
 	</div>
 
-	{#if puuid}
-		<div>puuid: {puuid}</div>
+	{#if gameData.length > 0}
+		<div>total basic pings: {totalBasicPings}</div>
+		<div>total missing pings: {totalMissingPings}</div>
+		<div>total danger pings: {totalDangerPings}</div>
+		<div>total all in pings: {totalAllInPings}</div>
+		<div>total get back pings: {totalGetBackPings}</div>
+		<div>total need vision pings: {totalNeedVisionPings}</div>
+		<div>total on my way pings: {totalOnMyWayPings}</div>
+		<div>total assist me pings: {totalAssistMePings}</div>
+		<div>total push pings: {totalPushPings}</div>
 	{/if}
-	<div>total basic pings: {totalBasicPings}</div>
-	<div>total missing pings: {totalMissingPings}</div>
-	<div>total danger pings: {totalDangerPings}</div>
-	<div>total all in pings: {totalAllInPings}</div>
-	<div>total get back pings: {totalGetBackPings}</div>
-	<div>total need vision pings: {totalNeedVisionPings}</div>
-	<div>total on my way pings: {totalOnMyWayPings}</div>
-	<div>total assist me pings: {totalAssistMePings}</div>
-	<div>total push pings: {totalPushPings}</div>
+
+	{#if latestMatches}
+		<div class="grid grid-cols-3 gap-4">
+			{#each latestMatches as match}
+				<button
+					class="rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
+					onclick={() => {
+						matchId = match;
+						fetchMatchApi();
+					}}
+				>
+					{match}
+				</button>
+			{/each}
+		</div>
+	{/if}
 </div>
