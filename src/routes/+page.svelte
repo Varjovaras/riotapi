@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { z } from 'zod';
-	import type { GameData, ParticipantIdArray, Ping } from '../types/types';
+	import type { GameData, ParticipantIdArray, Pings } from '../types/types';
 	import { gameDataSchema } from '../schemas/gameDataSchema';
 	import { participantIdArraySchema } from '../schemas/participantIdArraySchema';
 
 	const ACCOUNT_API = '/api/account';
-	const MATCH_API = `/api/matches/`;
+	const MATCH_API = `/api/match/`;
 	const MATCHES_BY_PUUID_API = `/api/matches-by-puuid/`;
 
 	let riotIdName = '';
@@ -17,7 +17,7 @@
 	let gameData: GameData = [];
 	let playerIds: ParticipantIdArray = [];
 
-	function calculateTotalPings(playerStats: GameData, pingType: Ping): number {
+	function calculateTotalPings(playerStats: GameData, pingType: Pings): number {
 		return playerStats
 			.map((participant) => participant[pingType])
 			.reduce((total, pings) => total + pings, 0);
