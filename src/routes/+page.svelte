@@ -58,22 +58,22 @@
 	}
 </script>
 
-<div class="flex min-h-screen flex-col items-center justify-center py-2">
+<div class="flex min-h-screen flex-col items-center justify-center">
 	<div class="mb-4 rounded px-8 pb-8 pt-6 shadow-md">
 		<div class="mb-4">
 			<label class="mb-2 block text-sm font-bold text-gray-700" for="Summoner name">
-				Summoner name
+				Riot account name
 			</label>
 			<input
 				class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
 				id="username"
 				type="text"
-				placeholder="Summoner name"
+				placeholder="Account name"
 				bind:value={riotIdName}
 			/>
 		</div>
 		<div class="mb-6">
-			<label class="mb-2 block text-sm font-bold text-gray-700" for="tag"> tag </label>
+			<label class="mb-2 block text-sm font-bold text-gray-700" for="tag"> Tag </label>
 			<input
 				class="focus:shadow-outline mb-3 w-full appearance-none rounded border border-red-500 px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
 				id="tag"
@@ -85,7 +85,7 @@
 		</div>
 
 		<button
-			class="mb-2 w-full rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
+			class="w-full rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
 			type="button"
 			on:click={fetchAccountApi}
 		>
@@ -95,15 +95,15 @@
 
 	{#if gameData.length > 0}
 		<div class="pb-4">
-			<div>total basic pings: {totalBasicPings}</div>
-			<div>total missing pings: {totalMissingPings}</div>
-			<div>total danger pings: {totalDangerPings}</div>
-			<div>total all in pings: {totalAllInPings}</div>
-			<div>total get back pings: {totalGetBackPings}</div>
-			<div>total need vision pings: {totalNeedVisionPings}</div>
-			<div>total on my way pings: {totalOnMyWayPings}</div>
-			<div>total assist me pings: {totalAssistMePings}</div>
-			<div>total push pings: {totalPushPings}</div>
+			<div>Basic pings: {totalBasicPings}</div>
+			<div>MissingPings pings: {totalMissingPings}</div>
+			<div>Danger pings: {totalDangerPings}</div>
+			<div>All in pings: {totalAllInPings}</div>
+			<div>Get back pings: {totalGetBackPings}</div>
+			<div>Need vision pings: {totalNeedVisionPings}</div>
+			<div>On my way pings: {totalOnMyWayPings}</div>
+			<div>Assist me pings: {totalAssistMePings}</div>
+			<div>Push pings: {totalPushPings}</div>
 		</div>
 	{/if}
 
