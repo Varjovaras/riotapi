@@ -94,22 +94,24 @@
 	</div>
 
 	{#if gameData.length > 0}
-		<div>total basic pings: {totalBasicPings}</div>
-		<div>total missing pings: {totalMissingPings}</div>
-		<div>total danger pings: {totalDangerPings}</div>
-		<div>total all in pings: {totalAllInPings}</div>
-		<div>total get back pings: {totalGetBackPings}</div>
-		<div>total need vision pings: {totalNeedVisionPings}</div>
-		<div>total on my way pings: {totalOnMyWayPings}</div>
-		<div>total assist me pings: {totalAssistMePings}</div>
-		<div>total push pings: {totalPushPings}</div>
+		<div class="pb-4">
+			<div>total basic pings: {totalBasicPings}</div>
+			<div>total missing pings: {totalMissingPings}</div>
+			<div>total danger pings: {totalDangerPings}</div>
+			<div>total all in pings: {totalAllInPings}</div>
+			<div>total get back pings: {totalGetBackPings}</div>
+			<div>total need vision pings: {totalNeedVisionPings}</div>
+			<div>total on my way pings: {totalOnMyWayPings}</div>
+			<div>total assist me pings: {totalAssistMePings}</div>
+			<div>total push pings: {totalPushPings}</div>
+		</div>
 	{/if}
 
 	{#if latestMatches}
 		<div class="grid grid-cols-3 gap-4">
 			{#each latestMatches as match}
 				<button
-					class="rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
+					class="border-spacing-2 rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
 					onclick={() => {
 						matchId = match;
 						fetchMatchApi();
