@@ -5,6 +5,9 @@ import type { participantIdArraySchema } from '../schemas/participantIdArraySche
 import type { pingSchema } from '../schemas/pingSchema';
 
 export type Pings = keyof z.infer<typeof pingSchema>;
+export type NumberOfPings = {
+	[K in Pings]: number;
+};
 
 export type ParticipantIdArray = z.infer<typeof participantIdArraySchema>;
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { z } from 'zod';
-	import type { GameData, ParticipantIdArray, Pings } from '../types/types';
+	import type { GameData, NumberOfPings, ParticipantIdArray, Pings } from '../types/types';
 	import { gameDataSchema } from '../schemas/gameDataSchema';
 	import { participantIdArraySchema } from '../schemas/participantIdArraySchema';
 
@@ -22,15 +22,23 @@
 			.map((participant) => participant[pingType])
 			.reduce((total, pings) => total + pings, 0);
 	}
-	$: totalMissingPings = calculateTotalPings(gameData, 'enemyMissingPings');
-	$: totalBasicPings = calculateTotalPings(gameData, 'basicPings');
-	$: totalDangerPings = calculateTotalPings(gameData, 'dangerPings');
-	$: totalAllInPings = calculateTotalPings(gameData, 'allInPings');
-	$: totalGetBackPings = calculateTotalPings(gameData, 'getBackPings');
-	$: totalNeedVisionPings = calculateTotalPings(gameData, 'needVisionPings');
-	$: totalOnMyWayPings = calculateTotalPings(gameData, 'onMyWayPings');
-	$: totalAssistMePings = calculateTotalPings(gameData, 'assistMePings');
-	$: totalPushPings = calculateTotalPings(gameData, 'pushPings');
+
+	$: pings = {
+		allInPings: calculateTotalPings(gameData, 'allInPings'),
+		assistMePings: calculateTotalPings(gameData, 'assistMePings'),
+		baitPings: calculateTotalPings(gameData, 'baitPings'),
+		basicPings: calculateTotalPings(gameData, 'basicPings'),
+		commandPings: calculateTotalPings(gameData, 'commandPings'),
+		dangerPings: calculateTotalPings(gameData, 'dangerPings'),
+		enemyMissingPings: calculateTotalPings(gameData, 'enemyMissingPings'),
+		enemyVisionPings: calculateTotalPings(gameData, 'enemyVisionPings'),
+		getBackPings: calculateTotalPings(gameData, 'getBackPings'),
+		holdPings: calculateTotalPings(gameData, 'holdPings'),
+		needVisionPings: calculateTotalPings(gameData, 'needVisionPings'),
+		onMyWayPings: calculateTotalPings(gameData, 'onMyWayPings'),
+		pushPings: calculateTotalPings(gameData, 'pushPings'),
+		visionClearedPings: calculateTotalPings(gameData, 'visionClearedPings')
+	} satisfies NumberOfPings;
 
 	async function fetchAccountApi() {
 		const response = await fetch(`${ACCOUNT_API}?name=${riotIdName}&tag=${riotIdTag}`);
@@ -95,15 +103,12 @@
 
 	{#if gameData.length > 0}
 		<div class="pb-4">
-			<div>Basic pings: {totalBasicPings}</div>
-			<div>MissingPings pings: {totalMissingPings}</div>
-			<div>Danger pings: {totalDangerPings}</div>
-			<div>All in pings: {totalAllInPings}</div>
-			<div>Get back pings: {totalGetBackPings}</div>
-			<div>Need vision pings: {totalNeedVisionPings}</div>
-			<div>On my way pings: {totalOnMyWayPings}</div>
-			<div>Assist me pings: {totalAssistMePings}</div>
-			<div>Push pings: {totalPushPings}</div>
+			<h3>Total amount of pings in the game:</h3>
+			{#each Object.entries(pings) as [pingKey, pingValue]}
+				<div>
+					<p>{pingKey}: {pingValue}</p>
+				</div>
+			{/each}
 		</div>
 	{/if}
 
