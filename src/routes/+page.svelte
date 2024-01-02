@@ -43,6 +43,7 @@
 	async function fetchAccountApi() {
 		const response = await fetch(`${ACCOUNT_API}?name=${riotIdName}&tag=${riotIdTag}`);
 		const data = await response.json();
+		console.log(data);
 		const puuidFromServer = z.string().parse(data);
 		puuid = puuidFromServer;
 		await fetchListOfMatchIds();
@@ -51,6 +52,7 @@
 	async function fetchListOfMatchIds() {
 		const response = await fetch(`${MATCHES_BY_PUUID_API}?puuid=${puuid}`);
 		const data = await response.json();
+		console.log(data);
 		const matches = z.array(z.string()).parse(data);
 		latestMatches = matches;
 		matchId = matches[0];
@@ -59,6 +61,7 @@
 	async function fetchMatchApi() {
 		const response = await fetch(`${MATCH_API}?match=${matchId}`);
 		const data = await response.json();
+		console.log(data);
 		const gameDataFromServer = gameDataSchema.parse(data.gameData);
 		const playerIdsFromServer = participantIdArraySchema.parse(data.participantIds);
 		gameData = gameDataFromServer;

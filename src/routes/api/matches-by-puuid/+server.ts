@@ -12,14 +12,14 @@ import type { GameData } from '../../../types/types';
  */
 export const GET: RequestHandler = async ({ fetch, url }) => {
 	const puuid = url.searchParams.get('puuid');
+	let start = url.searchParams.get('start');
+	let count = url.searchParams.get('count');
 	if (!puuid) {
 		return new Response('No puuid in url', { status: 400 });
 	}
-	let start = url.searchParams.get('start');
 	if (!start) {
 		start = '0';
 	}
-	let count = url.searchParams.get('count');
 	if (!start) {
 		count = '20';
 	}
