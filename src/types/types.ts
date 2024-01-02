@@ -10,6 +10,5 @@ export type NumberOfPings = {
 };
 
 export type ParticipantIdArray = z.infer<typeof participantIdArraySchema>;
-
 export type PlayerData = z.infer<typeof playerDataSchema>;
 export type GameData = z.infer<typeof gameDataSchema>;

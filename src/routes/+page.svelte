@@ -67,7 +67,7 @@
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center">
-	<div class="mb-4 rounded px-8 pb-8 pt-6 shadow-md">
+	<form class="mb-4 rounded px-8 pb-2 pt-6 shadow-md">
 		<div class="mb-4">
 			<label class="mb-2 block text-sm font-bold text-gray-700" for="Summoner name">
 				Riot account name
@@ -99,11 +99,11 @@
 		>
 			Fetch account details
 		</button>
-	</div>
+	</form>
 
 	{#if gameData.length > 0}
 		<div class="pb-4">
-			<h3>Total amount of pings in the game:</h3>
+			<h1>Total amount of pings in the game:</h1>
 			{#each Object.entries(pings) as [pingKey, pingValue]}
 				<div>
 					<p>{pingKey}: {pingValue}</p>
