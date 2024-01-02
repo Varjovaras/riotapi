@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 	if (!start) {
 		start = '0';
 	}
-	if (!start) {
+	if (!count) {
 		count = '20';
 	}
 	const API_URL = `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${PRIVATE_API_KEY}`;
