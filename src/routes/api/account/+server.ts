@@ -1,6 +1,5 @@
 import type { RequestHandler } from './$types';
 import { PRIVATE_API_KEY } from '$env/static/private';
-import { z } from 'zod';
 
 // const ACCOUNT_API = `https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/fentanyl420/420?api_key=${PRIVATE_API_KEY}}`;
 

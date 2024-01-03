@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { z } from 'zod';
-	import type { GameData, NumberOfPings, ParticipantIdArray } from '../types/types';
+	import type {
+		GameData,
+		NumberOfPings,
+		ParticipantIdArray,
+		Pings,
+		TotalAmountOfSinglePing
+	} from '../types/types';
 	import { gameDataSchema } from '../schemas/gameDataSchema';
 	import { participantIdArraySchema } from '../schemas/participantIdArraySchema';
 	import { calculateSinglePingType, calculateTotalPings, getPingKey } from './utils';
@@ -13,6 +19,7 @@
 	let riotIdTag = '';
 	let puuid = '';
 	let matchId = '';
+	let pingsByPlayer: TotalAmountOfSinglePing = [];
 	let latestMatches: string[] = [];
 	let errorMessage = '';
 	let gameData: GameData = [];
@@ -58,6 +65,18 @@
 		const playerIdsFromServer = participantIdArraySchema.parse(data.participantIds);
 		gameData = gameDataFromServer;
 		playerIds = playerIdsFromServer;
+	}
+
+	function getPingsByPlayer(pingType: Pings): TotalAmountOfSinglePing {
+		const pingsByPlayer: TotalAmountOfSinglePing = [];
+		for (let i = 0; i < 10; i++) {
+			const pings = gameData[i][pingType];
+			pingsByPlayer[i] = {
+				name: gameData[i].riotIdGameName,
+				amountOfPings: pings
+			};
+		}
+		return pingsByPlayer;
 	}
 	$: pings = {
 		allInPings: calculateSinglePingType(gameData, 'allInPings'),
@@ -134,16 +153,27 @@
 
 	{#if gameData.length > 0}
 		<div class="w-3/4 pt-4">
+			{#if pingsByPlayer}
+				<h2 class="h2">List of pings by a player</h2>
+				<ul>
+					{#each pingsByPlayer as ping}
+						<li>{ping.name} {ping.amountOfPings}</li>
+					{/each}
+				</ul>
+			{/if}
 			<h2 class="h2">Total amount of pings in the game</h2>
 			<h2 class="h2 text-center font-semibold">{totalPings}</h2>
 			<div class="mb-4 mt-4 grid w-full grid-cols-2 gap-4">
 				{#each Object.entries(pings) as [pingKey, pingValue]}
-					<div
+					<button
 						class="h-24 border-spacing-2 rounded border border-gray-400 bg-white px-8 py-4 font-semibold text-gray-800 shadow hover:bg-gray-300"
+						on:click={() => {
+							pingsByPlayer = getPingsByPlayer(pingKey as Pings);
+						}}
 					>
 						<p class="font-semibold">{getPingKey(pingKey)}:</p>
 						<p class="font-semibold">{pingValue}</p>
-					</div>
+					</button>
 				{/each}
 			</div>
 		</div>

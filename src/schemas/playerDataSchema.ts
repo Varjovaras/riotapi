@@ -249,7 +249,7 @@ export const playerDataSchema = z.object({
 	pushPings: z.number(),
 	puuid: z.string().optional(),
 	quadraKills: z.number().optional(),
-	riotIdGameName: z.string().optional(),
+	riotIdGameName: z.string(),
 	riotIdTagline: z.string().optional(),
 	role: z.string().optional(),
 	sightWardsBoughtInGame: z.number().optional(),
