@@ -1,11 +1,5 @@
 import { PRIVATE_API_KEY } from '$env/static/private';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { GameData } from '../../../types/types';
-
-// type Response = {
-// 	gameData: GameData;
-// 	participantIds: string[];
-// };
 
 /**
  * API for riot MATCH-V5 to get a list of match ids played by given puuid. Also possible to filter when the games are played
@@ -23,8 +17,8 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 	if (!count) {
 		count = '20';
 	}
-	const API_URL = `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${PRIVATE_API_KEY}`;
-	const response = await fetch(API_URL);
+	const MATCH_V5_API_URL = `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${PRIVATE_API_KEY}`;
+	const response = await fetch(MATCH_V5_API_URL);
 	const data = await response.json();
 	return new Response(JSON.stringify(data));
 };

@@ -13,6 +13,7 @@
 	let puuid = '';
 	let matchId = '';
 	let latestMatches: string[] = [];
+	let errorMessage = '';
 
 	let gameData: GameData = [];
 	let playerIds: ParticipantIdArray = [];
@@ -21,6 +22,41 @@
 		return playerStats
 			.map((participant) => participant[pingType])
 			.reduce((total, pings) => total + pings, 0);
+	}
+
+	function getPingKey(ping: string): string {
+		switch (ping) {
+			case 'allInPings':
+				return 'All in pings';
+			case 'assistMePings':
+				return 'Assist me pings';
+			case 'baitPings':
+				return 'Bait pings';
+			case 'basicPings':
+				return 'Basic pings';
+			case 'commandPings':
+				return 'Command pings';
+			case 'dangerPings':
+				return 'Danger pings';
+			case 'enemyMissingPings':
+				return 'Enemy missing pings';
+			case 'enemyVisionPings':
+				return 'Enemy vision pings';
+			case 'getBackPings':
+				return 'Get back pings';
+			case 'holdPings':
+				return 'Hold pings';
+			case 'needVisionPings':
+				return 'Need vision pings';
+			case 'onMyWayPings':
+				return 'On my way pings';
+			case 'pushPings':
+				return 'Push pings';
+			case 'visionClearedPings':
+				return 'Vision cleared pings';
+			default:
+				return 'Unknown ping';
+		}
 	}
 
 	$: pings = {
@@ -41,6 +77,9 @@
 	} satisfies NumberOfPings;
 
 	async function fetchAccountApi() {
+		if (riotIdTag && riotIdTag.startsWith('#')) {
+			riotIdTag = riotIdTag.slice(1);
+		}
 		const response = await fetch(`${ACCOUNT_API}?name=${riotIdName}&tag=${riotIdTag}`);
 		const data = await response.json();
 		console.log(data);
@@ -70,6 +109,13 @@
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center">
+	<h1 class="h1">Ping calculator</h1>
+	{#if errorMessage}
+		<div class="alert-message">
+			<h3 class="h3">(Error)</h3>
+			<p>{errorMessage}</p>
+		</div>
+	{/if}
 	<form class="mb-4 rounded px-8 pb-2 pt-6 shadow-md">
 		<div class="mb-4">
 			<label class="mb-2 block text-sm font-bold text-gray-700" for="Summoner name">
@@ -109,13 +155,13 @@
 			<h1>Total amount of pings in the game:</h1>
 			{#each Object.entries(pings) as [pingKey, pingValue]}
 				<div>
-					<p>{pingKey}: {pingValue}</p>
+					<p>{getPingKey(pingKey)}: {pingValue}</p>
 				</div>
 			{/each}
 		</div>
 	{/if}
 
-	{#if latestMatches}
+	{#if latestMatches && latestMatches.length > 1}
 		<div class="grid grid-cols-3 gap-4">
 			{#each latestMatches as match}
 				<button
