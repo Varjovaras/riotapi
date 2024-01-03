@@ -9,6 +9,11 @@ export type NumberOfPings = {
 	[K in Pings]: number;
 };
 
+export type PingKeys = [keyof NumberOfPings];
+export type TotalNumberOfPings = NumberOfPings & {
+	totalPings: number;
+};
+
 export type ParticipantIdArray = z.infer<typeof participantIdArraySchema>;
 export type PlayerData = z.infer<typeof playerDataSchema>;
 export type GameData = z.infer<typeof gameDataSchema>;

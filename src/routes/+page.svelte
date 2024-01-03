@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { z } from 'zod';
-	import type { GameData, NumberOfPings, ParticipantIdArray, Pings } from '../types/types';
+	import type { GameData, NumberOfPings, ParticipantIdArray } from '../types/types';
 	import { gameDataSchema } from '../schemas/gameDataSchema';
 	import { participantIdArraySchema } from '../schemas/participantIdArraySchema';
+	import { calculateSinglePingType, calculateTotalPings, getPingKey } from './utils';
 
 	const ACCOUNT_API = '/api/account';
 	const MATCH_API = `/api/match/`;
@@ -14,67 +15,9 @@
 	let matchId = '';
 	let latestMatches: string[] = [];
 	let errorMessage = '';
-
 	let gameData: GameData = [];
 	let playerIds: ParticipantIdArray = [];
-
-	function calculateTotalPings(playerStats: GameData, pingType: Pings): number {
-		return playerStats
-			.map((participant) => participant[pingType])
-			.reduce((total, pings) => total + pings, 0);
-	}
-
-	function getPingKey(ping: string): string {
-		switch (ping) {
-			case 'allInPings':
-				return 'All in pings';
-			case 'assistMePings':
-				return 'Assist me pings';
-			case 'baitPings':
-				return 'Bait pings';
-			case 'basicPings':
-				return 'Basic pings';
-			case 'commandPings':
-				return 'Command pings';
-			case 'dangerPings':
-				return 'Danger pings';
-			case 'enemyMissingPings':
-				return 'Enemy missing pings';
-			case 'enemyVisionPings':
-				return 'Enemy vision pings';
-			case 'getBackPings':
-				return 'Get back pings';
-			case 'holdPings':
-				return 'Hold pings';
-			case 'needVisionPings':
-				return 'Need vision pings';
-			case 'onMyWayPings':
-				return 'On my way pings';
-			case 'pushPings':
-				return 'Push pings';
-			case 'visionClearedPings':
-				return 'Vision cleared pings';
-			default:
-				return 'Unknown ping';
-		}
-	}
-
-	$: pings = {
-		allInPings: calculateTotalPings(gameData, 'allInPings'),
-		assistMePings: calculateTotalPings(gameData, 'assistMePings'),
-		baitPings: calculateTotalPings(gameData, 'baitPings'),
-		basicPings: calculateTotalPings(gameData, 'basicPings'),
-		commandPings: calculateTotalPings(gameData, 'commandPings'),
-		dangerPings: calculateTotalPings(gameData, 'dangerPings'),
-		enemyMissingPings: calculateTotalPings(gameData, 'enemyMissingPings'),
-		enemyVisionPings: calculateTotalPings(gameData, 'enemyVisionPings'),
-		getBackPings: calculateTotalPings(gameData, 'getBackPings'),
-		holdPings: calculateTotalPings(gameData, 'holdPings'),
-		needVisionPings: calculateTotalPings(gameData, 'needVisionPings'),
-		onMyWayPings: calculateTotalPings(gameData, 'onMyWayPings'),
-		pushPings: calculateTotalPings(gameData, 'pushPings'),
-		visionClearedPings: calculateTotalPings(gameData, 'visionClearedPings')
-	} satisfies NumberOfPings;
+	let showAccountForm = true;
 
 	async function fetchAccountApi() {
 		if (riotIdTag && riotIdTag.startsWith('#')) {
@@ -86,6 +29,9 @@
 		const puuidFromServer = z.string().parse(data);
 		puuid = puuidFromServer;
 		await fetchListOfMatchIds();
+		riotIdName = '';
+		riotIdTag = '';
+		showAccountForm = false;
 	}
 
 	async function fetchListOfMatchIds() {
@@ -106,6 +52,23 @@
 		gameData = gameDataFromServer;
 		playerIds = playerIdsFromServer;
 	}
+	$: pings = {
+		allInPings: calculateSinglePingType(gameData, 'allInPings'),
+		assistMePings: calculateSinglePingType(gameData, 'assistMePings'),
+		baitPings: calculateSinglePingType(gameData, 'baitPings'),
+		basicPings: calculateSinglePingType(gameData, 'basicPings'),
+		commandPings: calculateSinglePingType(gameData, 'commandPings'),
+		dangerPings: calculateSinglePingType(gameData, 'dangerPings'),
+		enemyMissingPings: calculateSinglePingType(gameData, 'enemyMissingPings'),
+		enemyVisionPings: calculateSinglePingType(gameData, 'enemyVisionPings'),
+		getBackPings: calculateSinglePingType(gameData, 'getBackPings'),
+		holdPings: calculateSinglePingType(gameData, 'holdPings'),
+		needVisionPings: calculateSinglePingType(gameData, 'needVisionPings'),
+		onMyWayPings: calculateSinglePingType(gameData, 'onMyWayPings'),
+		pushPings: calculateSinglePingType(gameData, 'pushPings'),
+		visionClearedPings: calculateSinglePingType(gameData, 'visionClearedPings')
+	} satisfies NumberOfPings;
+	$: totalPings = calculateTotalPings(gameData);
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center">
@@ -116,54 +79,60 @@
 			<p>{errorMessage}</p>
 		</div>
 	{/if}
-	<form class="mb-4 rounded px-8 pb-2 pt-6 shadow-md">
-		<div class="mb-4">
-			<label class="mb-2 block text-sm font-bold text-gray-700" for="Summoner name">
-				Riot account name
-			</label>
-			<input
-				class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-				id="username"
-				type="text"
-				placeholder="Account name"
-				bind:value={riotIdName}
-			/>
-		</div>
-		<div class="mb-6">
-			<label class="mb-2 block text-sm font-bold text-gray-700" for="tag"> Tag </label>
-			<input
-				class="focus:shadow-outline mb-3 w-full appearance-none rounded border border-red-500 px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-				id="tag"
-				type="text"
-				placeholder="Riot id # tag"
-				bind:value={riotIdTag}
-			/>
-			<p class="text-xs italic text-red-500">For example: Hide on Bush #420</p>
-		</div>
+	{#if showAccountForm}
+		<form class="mb-4 rounded px-8 pb-2 pt-6 shadow-md">
+			<div class="mb-4">
+				<label class="mb-2 block text-sm font-bold text-gray-700" for="Summoner name">
+					Riot account name
+				</label>
+				<input
+					class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+					id="username"
+					type="text"
+					placeholder="Account name"
+					bind:value={riotIdName}
+				/>
+			</div>
+			<div class="mb-6">
+				<label class="mb-2 block text-sm font-bold text-gray-700" for="tag"> Tag </label>
+				<input
+					class="focus:shadow-outline mb-3 w-full appearance-none rounded border border-red-500 px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+					id="tag"
+					type="text"
+					placeholder="Riot id # tag"
+					bind:value={riotIdTag}
+				/>
+				<p class="text-xs italic text-red-500">For example: Hide on Bush #420</p>
+			</div>
 
-		<button
-			class="w-full rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
-			type="button"
-			on:click={fetchAccountApi}
-		>
-			Fetch account details
-		</button>
-	</form>
+			<button
+				class="w-full rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
+				type="button"
+				on:click={fetchAccountApi}
+			>
+				Fetch account details
+			</button>
+		</form>
+	{/if}
 
 	{#if gameData.length > 0}
-		<div class="pb-4">
-			<h1>Total amount of pings in the game:</h1>
-			{#each Object.entries(pings) as [pingKey, pingValue]}
-				<div>
-					<p>{getPingKey(pingKey)}: {pingValue}</p>
-				</div>
-			{/each}
+		<div class="w-80">
+			<h3 class="h3">Total amount of pings in the game: {totalPings}</h3>
+			<div class="grid w-full grid-cols-2 gap-4 pb-4 pt-4">
+				{#each Object.entries(pings) as [pingKey, pingValue]}
+					<div
+						class="border-spacing-2 rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
+					>
+						<p>{getPingKey(pingKey)}: {pingValue}</p>
+					</div>
+				{/each}
+			</div>
 		</div>
 	{/if}
 
-	{#if latestMatches && latestMatches.length > 1}
-		<div class="grid grid-cols-3 gap-4">
-			{#each latestMatches as match}
+	{#if latestMatches}
+		<div class="grid w-80 grid-cols-3 gap-4 pb-4 pt-4">
+			{#each latestMatches as match, i}
 				<button
 					class="border-spacing-2 rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
 					onclick={() => {
@@ -171,7 +140,7 @@
 						fetchMatchApi();
 					}}
 				>
-					{match}
+					{i + 1}
 				</button>
 			{/each}
 		</div>
