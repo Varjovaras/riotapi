@@ -26,6 +26,13 @@
 		const response = await fetch(`${ACCOUNT_API}?name=${riotIdName}&tag=${riotIdTag}`);
 		const data = await response.json();
 		console.log(data);
+
+		if (response.status !== 200) {
+			errorMessage = await response.json();
+			setTimeout(() => {
+				errorMessage = '';
+			}, 5000);
+		}
 		const puuidFromServer = z.string().parse(data);
 		puuid = puuidFromServer;
 		await fetchListOfMatchIds();
@@ -73,12 +80,12 @@
 
 <div class="flex min-h-screen flex-col items-center justify-center">
 	<h1 class="h1">Ping calculator</h1>
-	{#if errorMessage}
+	<!-- {#if errorMessage}
 		<div class="alert-message">
 			<h3 class="h3">(Error)</h3>
 			<p>{errorMessage}</p>
 		</div>
-	{/if}
+	{/if} -->
 	{#if showAccountForm}
 		<form class="mb-4 rounded px-8 pb-2 pt-6 shadow-md">
 			<div class="mb-4">
@@ -102,7 +109,7 @@
 					placeholder="Riot id # tag"
 					bind:value={riotIdTag}
 				/>
-				<p class="text-xs italic text-red-500">For example: Hide on Bush #420</p>
+				<p class="text-xs italic text-red-500">For example: Hide on Bush #123</p>
 			</div>
 
 			<button
@@ -113,24 +120,37 @@
 				Fetch account details
 			</button>
 		</form>
+	{:else if !showAccountForm}
+		<button
+			class="bg-grey-100 text-gray300 mt-4 rounded border border-gray-400 px-8 py-2 font-semibold shadow hover:bg-gray-800"
+			type="button"
+			on:click={() => {
+				showAccountForm = true;
+			}}
+		>
+			Fetch new account details
+		</button>
 	{/if}
 
 	{#if gameData.length > 0}
-		<div class="w-80">
-			<h3 class="h3">Total amount of pings in the game: {totalPings}</h3>
-			<div class="grid w-full grid-cols-2 gap-4 pb-4 pt-4">
+		<div class="w-3/4 pt-4">
+			<h2 class="h2">Total amount of pings in the game</h2>
+			<h2 class="h2 text-center font-semibold">{totalPings}</h2>
+			<div class="mb-4 mt-4 grid w-full grid-cols-2 gap-4">
 				{#each Object.entries(pings) as [pingKey, pingValue]}
 					<div
-						class="border-spacing-2 rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
+						class="h-24 border-spacing-2 rounded border border-gray-400 bg-white px-8 py-4 font-semibold text-gray-800 shadow hover:bg-gray-300"
 					>
-						<p>{getPingKey(pingKey)}: {pingValue}</p>
+						<p class="font-semibold">{getPingKey(pingKey)}:</p>
+						<p class="font-semibold">{pingValue}</p>
 					</div>
 				{/each}
 			</div>
 		</div>
 	{/if}
 
-	{#if latestMatches}
+	{#if latestMatches.length > 0}
+		<h3 class="h3 pt-8 text-center">List of games. Click on to fetch the match details</h3>
 		<div class="grid w-80 grid-cols-3 gap-4 pb-4 pt-4">
 			{#each latestMatches as match, i}
 				<button
