@@ -5,7 +5,6 @@ export const pingSchema = z.object({
 	assistMePings: z.number(),
 	baitPings: z.number(),
 	basicPings: z.number(),
-	commandPings: z.number(),
 	dangerPings: z.number(),
 	enemyMissingPings: z.number(),
 	enemyVisionPings: z.number(),

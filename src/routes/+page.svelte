@@ -83,7 +83,6 @@
 		assistMePings: calculateSinglePingType(gameData, 'assistMePings'),
 		baitPings: calculateSinglePingType(gameData, 'baitPings'),
 		basicPings: calculateSinglePingType(gameData, 'basicPings'),
-		commandPings: calculateSinglePingType(gameData, 'commandPings'),
 		dangerPings: calculateSinglePingType(gameData, 'dangerPings'),
 		enemyMissingPings: calculateSinglePingType(gameData, 'enemyMissingPings'),
 		enemyVisionPings: calculateSinglePingType(gameData, 'enemyVisionPings'),

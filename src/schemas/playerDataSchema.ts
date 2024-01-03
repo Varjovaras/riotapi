@@ -129,7 +129,7 @@ export const playerDataSchema = z.object({
 	championId: z.number().optional(),
 	championName: z.string().optional(),
 	championTransform: z.number().optional(),
-	commandPings: z.number(),
+	commandPings: z.number().optional(),
 	consumablesPurchased: z.number().optional(),
 	damageDealtToBuildings: z.number().optional(),
 	damageDealtToObjectives: z.number().optional(),

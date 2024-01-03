@@ -12,7 +12,6 @@ export function calculateTotalPings(playerStats: GameData): number {
 		'assistMePings',
 		'baitPings',
 		'basicPings',
-		'commandPings',
 		'dangerPings',
 		'enemyMissingPings',
 		'enemyVisionPings',
@@ -39,8 +38,8 @@ export function getPingKey(ping: string): string {
 			return 'Bait pings';
 		case 'basicPings':
 			return 'Basic pings';
-		case 'commandPings':
-			return 'Command pings';
+		// case 'commandPings':
+		// 	return 'Command pings';
 		case 'dangerPings':
 			return 'Danger pings';
 		case 'enemyMissingPings':
