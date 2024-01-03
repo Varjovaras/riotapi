@@ -22,7 +22,6 @@ export function calculateTotalPings(playerStats: GameData): number {
 		'pushPings',
 		'visionClearedPings'
 	];
-
 	return allPings.reduce(
 		(total, pingType) => total + calculateSinglePingType(playerStats, pingType),
 		0

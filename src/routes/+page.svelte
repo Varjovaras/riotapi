@@ -23,7 +23,6 @@
 	let latestMatches: string[] = [];
 	let errorMessage = '';
 	let gameData: GameData = [];
-	let playerIds: ParticipantIdArray = [];
 	let showAccountForm = true;
 
 	async function fetchAccountApi() {
@@ -62,9 +61,7 @@
 		const data = await response.json();
 		console.log(data);
 		const gameDataFromServer = gameDataSchema.parse(data.gameData);
-		const playerIdsFromServer = participantIdArraySchema.parse(data.participantIds);
 		gameData = gameDataFromServer;
-		playerIds = playerIdsFromServer;
 	}
 
 	function getPingsByPlayer(pingType: Pings): TotalAmountOfSinglePing {
@@ -154,7 +151,7 @@
 		<div class="w-3/4 pt-4">
 			{#if pingsByPlayer}
 				<h2 class="h2">List of pings by a player</h2>
-				<ul>
+				<ul class="grid grid-rows-2">
 					{#each pingsByPlayer as ping}
 						<li>{ping.name} {ping.amountOfPings}</li>
 					{/each}
