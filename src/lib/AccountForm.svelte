@@ -5,7 +5,6 @@
 	const ACCOUNT_API = '/api/account';
 	const MATCHES_BY_PUUID_API = `/api/matches-by-puuid/`;
 
-	// export let errorMessage = '';
 	let puuid = '';
 	let showAccountForm = true;
 	let riotIdName = '';
