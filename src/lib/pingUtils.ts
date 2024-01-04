@@ -1,4 +1,4 @@
-import type { GameData, Pings, NumberOfPings, TotalNumberOfPings } from '../types/types';
+import type { GameData, Pings, NumberOfPings, TotalNumberOfPings } from './types';
 
 export function calculateSinglePingType(playerStats: GameData, pingType: Pings): number {
 	return playerStats
