@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { GameData } from '../lib/types';
-	import { gameDataSchema } from '../schemas/gameDataSchema';
+	import { gameDataSchema } from '../lib/schemas/gameDataSchema';
 	import AccountForm from '$lib/AccountForm.svelte';
 	import LatestMatches from '$lib/LatestMatches.svelte';
 	import PingComponent from '$lib/PingComponent.svelte';
@@ -27,9 +27,7 @@
 	}
 </script>
 
-<div class="flex min-h-screen flex-col items-center justify-center">
-	<h1 class="h1">Ping calculator</h1>
-	<AccountForm on:submit={handleAccountForm} />
-	<PingComponent {gameData} />
-	<LatestMatches {latestMatches} {fetchMatchApi} />
-</div>
+<h1 class="h1">Ping calculator</h1>
+<AccountForm on:submit={handleAccountForm} />
+<PingComponent {gameData} />
+<LatestMatches {latestMatches} {fetchMatchApi} />

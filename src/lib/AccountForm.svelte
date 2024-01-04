@@ -10,7 +10,7 @@
 	let riotIdName = '';
 	let riotIdTag = '';
 
-	const dispatch = createEventDispatcher<{ submit: { puuid: string; latestMatches: string[] } }>();
+	const dispatch = createEventDispatcher<{ message: { puuid: string; latestMatches: string[] } }>();
 
 	async function fetchAccountApi() {
 		if (riotIdTag && riotIdTag.startsWith('#')) {
@@ -25,7 +25,7 @@
 		let latestMatches = await fetchListOfMatchIds();
 		riotIdTag = '';
 		showAccountForm = false;
-		dispatch('submit', {
+		dispatch('message', {
 			puuid: puuid,
 			latestMatches: latestMatches
 		});

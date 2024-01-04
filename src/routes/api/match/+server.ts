@@ -1,8 +1,8 @@
 import type { RequestHandler } from './$types';
 import { PRIVATE_API_KEY } from '$env/static/private';
-import { gameDataSchema } from '../../../schemas/gameDataSchema';
+import { gameDataSchema } from '../../../lib/schemas/gameDataSchema';
 import type { GameData } from '../../../lib/types';
-import { participantIdArraySchema } from '../../../schemas/participantIdArraySchema';
+import { participantIdArraySchema } from '../../../lib/schemas/participantIdArraySchema';
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
 	const matchId = url.searchParams.get('match');

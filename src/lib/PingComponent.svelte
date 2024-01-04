@@ -4,17 +4,7 @@
 
 	export let gameData: GameData;
 	let pingsByPlayer: TotalAmountOfSinglePing = [];
-	function getPingsByPlayer(pingType: Pings): TotalAmountOfSinglePing {
-		const pingsByPlayer: TotalAmountOfSinglePing = [];
-		for (let i = 0; i < 10; i++) {
-			const pings = gameData[i][pingType];
-			pingsByPlayer[i] = {
-				name: gameData[i].riotIdGameName,
-				amountOfPings: pings
-			};
-		}
-		return pingsByPlayer;
-	}
+
 	$: pings = {
 		allInPings: calculateSinglePingType(gameData, 'allInPings'),
 		assistMePings: calculateSinglePingType(gameData, 'assistMePings'),
@@ -31,6 +21,18 @@
 		visionClearedPings: calculateSinglePingType(gameData, 'visionClearedPings')
 	} satisfies NumberOfPings;
 	$: totalPings = calculateTotalPings(gameData);
+
+	function getPingsByPlayer(pingType: Pings): TotalAmountOfSinglePing {
+		const pingsByPlayer: TotalAmountOfSinglePing = [];
+		for (let i = 0; i < 10; i++) {
+			const pings = gameData[i][pingType];
+			pingsByPlayer[i] = {
+				name: gameData[i].riotIdGameName,
+				amountOfPings: pings
+			};
+		}
+		return pingsByPlayer;
+	}
 </script>
 
 {#if gameData.length > 0}
