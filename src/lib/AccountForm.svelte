@@ -5,6 +5,7 @@
 	const ACCOUNT_API = '/api/account';
 	const MATCHES_BY_PUUID_API = `/api/matches-by-puuid/`;
 
+	let riotNameInput: HTMLInputElement;
 	let puuid = '';
 	let showAccountForm = true;
 	let riotIdName = '';
@@ -13,11 +14,33 @@
 
 	const dispatch = createEventDispatcher<{ message: { puuid: string; latestMatches: string[] } }>();
 
+	function errorMessageHandler(response: Response) {
+		if (response.status === 404) {
+			errorMessage = `Account not found for ${riotIdName}#${riotIdTag}`;
+			setTimeout(() => {
+				errorMessage = '';
+			}, 5000);
+		} else {
+			errorMessage = response.statusText;
+			setTimeout(() => {
+				errorMessage = '';
+			}, 5000);
+		}
+		riotIdName = '';
+		riotIdTag = '';
+		riotNameInput.focus();
+	}
+
 	async function fetchAccountApi() {
 		if (riotIdTag && riotIdTag.startsWith('#')) {
 			riotIdTag = riotIdTag.slice(1);
 		}
 		const response = await fetch(`${ACCOUNT_API}?name=${riotIdName}&tag=${riotIdTag}`);
+		console.log(response);
+		if (response.status !== 200) {
+			errorMessageHandler(response);
+			return;
+		}
 		const data = await response.json();
 		console.log(data);
 		const puuidFromServer = z.string().parse(data);
@@ -30,7 +53,6 @@
 				errorMessage = '';
 			}, 5000);
 			showAccountForm = true;
-
 			return;
 		}
 		riotIdTag = '';
@@ -60,7 +82,7 @@
 {/if}
 
 {#if showAccountForm}
-	<form class="mb-4 rounded px-8 pb-2 pt-6 shadow-md">
+	<form class="mb-4 rounded px-8 pb-2 pt-6 shadow-md" on:submit|preventDefault={fetchAccountApi}>
 		<div class="mb-4">
 			<label class="mb-2 block text-sm font-bold text-gray-700" for="Summoner name">
 				Riot account name
@@ -71,6 +93,7 @@
 				type="text"
 				placeholder="Account name"
 				bind:value={riotIdName}
+				bind:this={riotNameInput}
 			/>
 		</div>
 		<div class="mb-6">
@@ -84,13 +107,11 @@
 			/>
 			<p class="text-xs italic text-red-500">For example: Hide on Bush #123</p>
 		</div>
-
 		<button
-			class="w-full rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
-			type="button"
-			on:click={fetchAccountApi}
+			class="w-full rounded border border-gray-400 bg-white px-4 py-2 text-gray-800 shadow hover:bg-gray-300"
+			type="submit"
 		>
-			Fetch account details
+			> Fetch account details
 		</button>
 	</form>
 {:else if !showAccountForm}
