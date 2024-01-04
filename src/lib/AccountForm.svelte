@@ -111,7 +111,7 @@
 			class="w-full rounded border border-gray-400 bg-white px-4 py-2 text-gray-800 shadow hover:bg-gray-300"
 			type="submit"
 		>
-			> Fetch account details
+			Fetch account details
 		</button>
 	</form>
 {:else if !showAccountForm}
