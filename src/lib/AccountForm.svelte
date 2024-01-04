@@ -10,7 +10,6 @@
 	let showAccountForm = true;
 	let riotIdName = '';
 	let riotIdTag = '';
-	let matchId = '';
 
 	const dispatch = createEventDispatcher<{ submit: { puuid: string; latestMatches: string[] } }>();
 
