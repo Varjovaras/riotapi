@@ -11,6 +11,9 @@
 	let matchId = '';
 	let latestMatches: string[] = [];
 	let gameData: GameData = [];
+	// $: {
+	// 	console.log(latestMatches);
+	// }
 
 	async function fetchMatchApi(match: string) {
 		const response = await fetch(`${MATCH_API}?match=${match}`);
@@ -28,6 +31,6 @@
 </script>
 
 <h1 class="h1">Ping calculator</h1>
-<AccountForm on:submit={handleAccountForm} />
+<AccountForm on:message={handleAccountForm} />
 <PingComponent {gameData} />
 <LatestMatches {latestMatches} {fetchMatchApi} />

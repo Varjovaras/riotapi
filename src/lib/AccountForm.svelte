@@ -9,6 +9,7 @@
 	let showAccountForm = true;
 	let riotIdName = '';
 	let riotIdTag = '';
+	let errorMessage = '';
 
 	const dispatch = createEventDispatcher<{ message: { puuid: string; latestMatches: string[] } }>();
 
@@ -19,10 +20,19 @@
 		const response = await fetch(`${ACCOUNT_API}?name=${riotIdName}&tag=${riotIdTag}`);
 		const data = await response.json();
 		console.log(data);
-
 		const puuidFromServer = z.string().parse(data);
 		puuid = puuidFromServer;
 		let latestMatches = await fetchListOfMatchIds();
+		if (latestMatches.length === 0) {
+			errorMessage = 'No matches found';
+			console.log('No matches found for that riot id');
+			setTimeout(() => {
+				errorMessage = '';
+			}, 5000);
+			showAccountForm = true;
+
+			return;
+		}
 		riotIdTag = '';
 		showAccountForm = false;
 		dispatch('message', {
@@ -39,6 +49,15 @@
 		return matches;
 	}
 </script>
+
+{#if errorMessage}
+	<div
+		class="my-4 mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
+		role="alert"
+	>
+		<span class="font-medium">{errorMessage}</span>
+	</div>
+{/if}
 
 {#if showAccountForm}
 	<form class="mb-4 rounded px-8 pb-2 pt-6 shadow-md">
