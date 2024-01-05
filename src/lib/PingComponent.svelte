@@ -1,9 +1,15 @@
 <script lang="ts">
-	import { calculateSinglePingType, calculateTotalPings, getPingKey } from './pingUtils';
+	import {
+		calculateSinglePingType,
+		calculateTotalPings,
+		getPingDisplayName,
+		getPingKey
+	} from './pingUtils';
 	import type { GameData, NumberOfPings, Pings, TotalAmountOfSinglePing } from './types';
 
 	export let gameData: GameData;
 	let pingsByPlayer: TotalAmountOfSinglePing = [];
+	let singlePingType: string = '';
 
 	$: pings = {
 		allInPings: calculateSinglePingType(gameData, 'allInPings'),
@@ -31,6 +37,7 @@
 				amountOfPings: pings
 			};
 		}
+		singlePingType = getPingDisplayName(pingType);
 		return pingsByPlayer;
 	}
 </script>
@@ -38,7 +45,7 @@
 {#if gameData.length > 0}
 	<div class="w-3/4 pt-4 text-center">
 		{#if pingsByPlayer.length > 0}
-			<h3 class="font-sm italic text-red-500">Total pings per player</h3>
+			<h3 class="font-sm italic text-red-500">Total {singlePingType} pings per player</h3>
 
 			<ul class="grid grid-rows-2">
 				{#each pingsByPlayer as ping}
@@ -59,7 +66,7 @@
 					}}
 					style="min-width: auto;"
 				>
-					<p class="font-sm">{getPingKey(pingKey)}:</p>
+					<p class="font-sm">{getPingKey(pingKey as Pings)}:</p>
 					<p class="font-sm">{pingValue}</p>
 				</button>
 			{/each}

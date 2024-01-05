@@ -27,7 +27,7 @@ export function calculateTotalPings(playerStats: GameData): number {
 		0
 	);
 }
-export function getPingKey(ping: string): string {
+export function getPingKey(ping: Pings): string {
 	switch (ping) {
 		case 'allInPings':
 			return 'All in pings';
@@ -60,4 +60,9 @@ export function getPingKey(ping: string): string {
 		default:
 			return '';
 	}
+}
+
+export function getPingDisplayName(ping: Pings): string {
+	const basePingName = getPingKey(ping);
+	return basePingName.replace(' pings', '').toLowerCase();
 }
