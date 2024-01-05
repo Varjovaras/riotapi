@@ -36,7 +36,7 @@
 </script>
 
 {#if gameData.length > 0}
-	<div class="w-1/2 pt-4 text-center">
+	<div class="w-3/4 pt-4 text-center">
 		{#if pingsByPlayer.length > 0}
 			<h3 class="font-sm italic text-red-500">Total pings per player</h3>
 
@@ -47,17 +47,17 @@
 			</ul>
 		{/if}
 
-		<h2 class="h-2 text-red-500 shadow hover:bg-gray-900">
+		<h2 class="h2 mt-4 text-red-500 shadow hover:bg-gray-900">
 			Total amount of pings in the game {totalPings}
 		</h2>
-		<!-- <div class=" font-semibold">{totalPings}</div> -->
 		<div class="grid grid-cols-2 gap-2">
 			{#each Object.entries(pings) as [pingKey, pingValue]}
 				<button
-					class="my-8 border-spacing-2 rounded border border-gray-400 bg-white px-8 py-4 font-semibold text-gray-800 shadow hover:bg-gray-300"
+					class="my-2 border-spacing-2 rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
 					on:click={() => {
-                    pingsByPlayer = getPingsByPlayer(pingKey as Pings);
-                }}
+						pingsByPlayer = getPingsByPlayer(pingKey as Pings);
+					}}
+					style="min-width: auto;"
 				>
 					<p class="font-sm">{getPingKey(pingKey)}:</p>
 					<p class="font-sm">{pingValue}</p>
