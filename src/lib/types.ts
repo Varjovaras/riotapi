@@ -16,6 +16,7 @@ export type TotalNumberOfPings = NumberOfPings & {
 
 export type RiotAccountNameAndAmountOfSinglePing = {
 	name: string;
+	teamId: number;
 	amountOfPings: number;
 };
 export type TotalAmountOfSinglePing = RiotAccountNameAndAmountOfSinglePing[];

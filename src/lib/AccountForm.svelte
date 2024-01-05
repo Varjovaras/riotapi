@@ -105,7 +105,7 @@
 				placeholder="Riot id # tag"
 				bind:value={riotIdTag}
 			/>
-			<p class="text-xs italic text-red-500">For example: Hide on Bush #123</p>
+			<p class="text-xs italic text-red-500">For example: thebausffs #EUW</p>
 		</div>
 		<button
 			class="w-full rounded border border-gray-400 bg-white px-4 py-2 text-gray-800 shadow hover:bg-gray-300"

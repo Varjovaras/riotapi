@@ -266,7 +266,7 @@ export const playerDataSchema = z.object({
 	summonerLevel: z.number().optional(),
 	summonerName: z.string().optional(),
 	teamEarlySurrendered: z.boolean().optional(),
-	teamId: z.number().optional(),
+	teamId: z.number(),
 	teamPosition: z.string().optional(),
 	timeCCingOthers: z.number().optional(),
 	timePlayed: z.number().optional(),

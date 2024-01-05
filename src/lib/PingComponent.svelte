@@ -34,6 +34,7 @@
 			const pings = gameData[i][pingType];
 			pingsByPlayer[i] = {
 				name: gameData[i].riotIdGameName,
+				teamId: gameData[i].teamId,
 				amountOfPings: pings
 			};
 		}
@@ -47,11 +48,32 @@
 		{#if pingsByPlayer.length > 0}
 			<h3 class="font-sm italic text-red-500">Total {singlePingType} pings per player</h3>
 
-			<ul class="grid grid-rows-2">
-				{#each pingsByPlayer as ping}
-					<li>{ping.name} {ping.amountOfPings}</li>
-				{/each}
-			</ul>
+			<table class="w-full">
+				<tbody>
+					<tr>
+						<td>
+							<ul class="grid grid-rows-2">
+								<h3 class="h3">Blue team</h3>
+								{#each pingsByPlayer as ping}
+									{#if ping.teamId === 100}
+										<li>{ping.name} {ping.amountOfPings}</li>
+									{/if}
+								{/each}
+							</ul>
+						</td>
+						<td>
+							<ul class="grid grid-rows-2">
+								<h3 class="h3">Red team</h3>
+								{#each pingsByPlayer as ping}
+									{#if ping.teamId === 200}
+										<li>{ping.name} {ping.amountOfPings}</li>
+									{/if}
+								{/each}
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		{/if}
 
 		<h2 class="h2 mt-4 text-red-500 shadow hover:bg-gray-900">
