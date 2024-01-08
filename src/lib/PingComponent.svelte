@@ -1,9 +1,10 @@
 <script lang="ts">
 	import {
-		calculateSinglePingType,
-		calculateTotalPings,
+		sumOfAllPingsInGame,
 		getPingDisplayName,
-		getPingKey
+		getPingKey,
+		totalNumberOfPing,
+		getPlayerWithMostPings
 	} from './pingUtils';
 	import type { GameData, NumberOfPings, Pings, TotalAmountOfSinglePing } from './types';
 
@@ -12,21 +13,22 @@
 	let singlePingType: string = '';
 
 	$: pings = {
-		allInPings: calculateSinglePingType(gameData, 'allInPings'),
-		assistMePings: calculateSinglePingType(gameData, 'assistMePings'),
-		baitPings: calculateSinglePingType(gameData, 'baitPings'),
-		basicPings: calculateSinglePingType(gameData, 'basicPings'),
-		dangerPings: calculateSinglePingType(gameData, 'dangerPings'),
-		enemyMissingPings: calculateSinglePingType(gameData, 'enemyMissingPings'),
-		enemyVisionPings: calculateSinglePingType(gameData, 'enemyVisionPings'),
-		getBackPings: calculateSinglePingType(gameData, 'getBackPings'),
-		holdPings: calculateSinglePingType(gameData, 'holdPings'),
-		needVisionPings: calculateSinglePingType(gameData, 'needVisionPings'),
-		onMyWayPings: calculateSinglePingType(gameData, 'onMyWayPings'),
-		pushPings: calculateSinglePingType(gameData, 'pushPings'),
-		visionClearedPings: calculateSinglePingType(gameData, 'visionClearedPings')
+		allInPings: totalNumberOfPing(gameData, 'allInPings'),
+		assistMePings: totalNumberOfPing(gameData, 'assistMePings'),
+		baitPings: totalNumberOfPing(gameData, 'baitPings'),
+		basicPings: totalNumberOfPing(gameData, 'basicPings'),
+		dangerPings: totalNumberOfPing(gameData, 'dangerPings'),
+		enemyMissingPings: totalNumberOfPing(gameData, 'enemyMissingPings'),
+		enemyVisionPings: totalNumberOfPing(gameData, 'enemyVisionPings'),
+		getBackPings: totalNumberOfPing(gameData, 'getBackPings'),
+		holdPings: totalNumberOfPing(gameData, 'holdPings'),
+		needVisionPings: totalNumberOfPing(gameData, 'needVisionPings'),
+		onMyWayPings: totalNumberOfPing(gameData, 'onMyWayPings'),
+		pushPings: totalNumberOfPing(gameData, 'pushPings'),
+		visionClearedPings: totalNumberOfPing(gameData, 'visionClearedPings')
 	} satisfies NumberOfPings;
-	$: totalPings = calculateTotalPings(gameData);
+	$: totalPings = sumOfAllPingsInGame(gameData);
+	$: puuIdWithMostPings = getPlayerWithMostPings(gameData, singlePingType);
 
 	function getPingsByPlayer(pingType: Pings): TotalAmountOfSinglePing {
 		const pingsByPlayer: TotalAmountOfSinglePing = [];
