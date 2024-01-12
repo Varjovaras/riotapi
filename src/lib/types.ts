@@ -14,12 +14,12 @@ export type TotalNumberOfPings = NumberOfPings & {
 	totalPings: number;
 };
 
-export type RiotAccountNameAndAmountOfSinglePing = {
+export type PlayerPingData = {
 	name: string;
 	teamId: number;
 	amountOfPings: number;
 };
-export type TotalAmountOfSinglePing = RiotAccountNameAndAmountOfSinglePing[];
+export type TotalAmountOfSinglePing = PlayerPingData[] | null;
 
 export type ParticipantIdArray = z.infer<typeof participantIdArraySchema>;
 export type PlayerData = z.infer<typeof playerDataSchema>;

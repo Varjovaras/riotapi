@@ -11,9 +11,6 @@
 	let matchId = '';
 	let latestMatches: string[] = [];
 	let gameData: GameData = [];
-	// $: {
-	// 	console.log(latestMatches);
-	// }
 
 	async function fetchMatchApi(match: string) {
 		const response = await fetch(`${MATCH_API}?match=${match}`);
