@@ -4,12 +4,12 @@ import type { gameDataSchema } from './schemas/gameDataSchema';
 import type { participantIdArraySchema } from './schemas/participantIdArraySchema';
 import type { pingSchema } from './schemas/pingSchema';
 
-export type Pings = keyof z.infer<typeof pingSchema>;
+export type SinglePing = keyof z.infer<typeof pingSchema>;
 export type NumberOfPings = {
-	[K in Pings]: number;
+	[K in SinglePing]: number;
 };
 
-export type PingKeys = [keyof NumberOfPings];
+export type SinglePingKeys = [keyof NumberOfPings];
 export type TotalNumberOfPings = NumberOfPings & {
 	totalPings: number;
 };

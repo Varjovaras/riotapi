@@ -6,11 +6,11 @@
 		totalNumberOfSinglePing,
 		getPlayerWithMostPings
 	} from './pingUtils';
-	import type { GameData, NumberOfPings, Pings, TotalAmountOfSinglePing } from './types';
+	import type { GameData, NumberOfPings, SinglePing, TotalAmountOfSinglePing } from './types';
 
 	export let gameData: GameData;
 	let pingsByPlayer: TotalAmountOfSinglePing = [];
-	let singlePingType: Pings;
+	let singlePingType: string;
 
 	$: pings = {
 		allInPings: totalNumberOfSinglePing(gameData, 'allInPings'),
@@ -28,9 +28,9 @@
 		visionClearedPings: totalNumberOfSinglePing(gameData, 'visionClearedPings')
 	} satisfies NumberOfPings;
 	$: totalPings = sumOfAllPingsInGame(gameData);
-	$: puuIdWithMostPings = getPlayerWithMostPings(gameData, singlePingType);
+	// $: puuIdWithMostPings = getPlayerWithMostPings(gameData, singlePingType);
 
-	function getPingsByPlayer(pingType: Pings): TotalAmountOfSinglePing {
+	function getPingsByPlayer(pingType: SinglePing): TotalAmountOfSinglePing {
 		const pingsByPlayer: TotalAmountOfSinglePing = [];
 		for (let i = 0; i < 10; i++) {
 			const pings = gameData[i][pingType];
@@ -86,11 +86,11 @@
 				<button
 					class="my-2 border-spacing-2 rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
 					on:click={() => {
-						pingsByPlayer = getPingsByPlayer(pingKey as Pings);
+						pingsByPlayer = getPingsByPlayer(pingKey as SinglePing);
 					}}
 					style="min-width: auto;"
 				>
-					<p class="font-sm">{getPingKey(pingKey as Pings)}:</p>
+					<p class="font-sm">{getPingKey(pingKey as SinglePing)}:</p>
 					<p class="font-sm">{pingValue}</p>
 				</button>
 			{/each}
