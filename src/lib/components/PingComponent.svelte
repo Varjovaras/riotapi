@@ -4,8 +4,13 @@
 		getPingDisplayName,
 		getPingKey,
 		totalNumberOfSinglePing
-	} from './pingUtils';
-	import type { GameData, NumberOfPings, SinglePing, TotalAmountOfSinglePing } from './types';
+	} from '../utils/pingHelpers';
+	import type {
+		GameData,
+		NumberOfPings,
+		SinglePing,
+		TotalAmountOfSinglePing
+	} from '../utils/types';
 
 	export let gameData: GameData;
 	let singlePingType: string;
@@ -50,7 +55,7 @@
 {#if gameData.length > 0}
 	<div class="w-3/4 pt-4 text-center">
 		{#if pingsByPlayer && pingsByPlayer.length > 0}
-			<h3 class="font-sm italic text-red-500">Total {singlePingType} pings per player</h3>
+			<h3 class="font-sm text-red-500">Total {singlePingType} pings per player</h3>
 
 			<table class="w-full">
 				<tbody>

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { GameData } from '../lib/types';
+	import type { GameData } from '../lib/utils/types';
 	import { gameDataSchema } from '../lib/schemas/gameDataSchema';
-	import AccountForm from '$lib/AccountForm.svelte';
-	import LatestMatches from '$lib/LatestMatches.svelte';
-	import PingComponent from '$lib/PingComponent.svelte';
+	import AccountForm from '$lib/components/AccountForm.svelte';
+	import LatestMatches from '$lib/components/LatestMatches.svelte';
+	import PingComponent from '$lib/components/PingComponent.svelte';
 
 	const MATCH_API = `/api/match/`;
 
