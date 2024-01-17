@@ -2,21 +2,18 @@ import type { GameData, SinglePing, PlayerData } from './types';
 
 //total number of times a single ping has been made in the game
 //this counts both teams together
-export function totalNumberOfSinglePing(gameData: GameData, pingType: SinglePing): number {
+export function getTotalPingsForType(gameData: GameData, pingType: SinglePing): number {
 	return gameData
 		.map((participant) => participant[pingType])
 		.reduce((total, pings) => total + pings, 0);
 }
 
 //total number one player has made a single ping
-export function totalNumberOfSinglePingPerPlayer(
-	playerData: PlayerData,
-	pingType: SinglePing
-): number {
+export function getPlayerPingsForType(playerData: PlayerData, pingType: SinglePing): number {
 	return playerData[pingType];
 }
 
-export function sumOfAllPingsInGame(playerStats: GameData): number {
+export function getTotalPingsInGame(playerStats: GameData): number {
 	const allPings: SinglePing[] = [
 		'allInPings',
 		'assistMePings',
@@ -33,28 +30,28 @@ export function sumOfAllPingsInGame(playerStats: GameData): number {
 		'visionClearedPings'
 	];
 	return allPings.reduce(
-		(total, pingType) => total + totalNumberOfSinglePing(playerStats, pingType),
+		(total, pingType) => total + getTotalPingsForType(playerStats, pingType),
 		0
 	);
 }
 
-export function getPlayerWithMostPings(gameData: GameData, ping: string): string {
-	const pingType = getPingTypeFromString(ping);
+export function getPlayerWithMostPingsOfType(gameData: GameData, ping: string): string {
+	const pingType = getPingTypeFromDisplayName(ping);
 	if (!pingType) {
 		return '';
 	}
-	let most = totalNumberOfSinglePingPerPlayer(gameData[0], ping as SinglePing);
+	let most = getPlayerPingsForType(gameData[0], ping as SinglePing);
 	let playerWithMostPings = gameData[0].puuid;
 	for (let i = 1; i < gameData.length; i++) {
-		if (totalNumberOfSinglePingPerPlayer(gameData[i], ping as SinglePing) > most) {
-			most = totalNumberOfSinglePingPerPlayer(gameData[i], ping as SinglePing);
+		if (getPlayerPingsForType(gameData[i], ping as SinglePing) > most) {
+			most = getPlayerPingsForType(gameData[i], ping as SinglePing);
 			playerWithMostPings = gameData[i].puuid;
 		}
 	}
 	return playerWithMostPings;
 }
 
-export function getPingKey(ping: SinglePing): string {
+export function getPingDisplayName(ping: SinglePing): string {
 	switch (ping) {
 		case 'allInPings':
 			return 'All in pings';
@@ -88,7 +85,8 @@ export function getPingKey(ping: SinglePing): string {
 			return '';
 	}
 }
-export function getPingTypeFromString(displayName: string): SinglePing | null {
+
+export function getPingTypeFromDisplayName(displayName: string): SinglePing | null {
 	switch (displayName.toLowerCase()) {
 		case 'all in':
 			return 'allInPings';
@@ -123,7 +121,7 @@ export function getPingTypeFromString(displayName: string): SinglePing | null {
 	}
 }
 
-export function getPingDisplayName(ping: SinglePing): string {
-	const basePingName = getPingKey(ping);
+export function getShortPingDisplayName(ping: SinglePing): string {
+	const basePingName = getPingDisplayName(ping);
 	return basePingName.replace(' pings', '').toLowerCase();
 }
