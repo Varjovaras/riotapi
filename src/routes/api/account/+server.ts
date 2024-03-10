@@ -12,6 +12,7 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 		});
 	}
 	const ACCOUNT_API_URL = `https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${riotIdName}/${riotIdTag}?api_key=${PRIVATE_API_KEY}`;
+
 	const response = await fetch(ACCOUNT_API_URL);
 	if (response.status !== 200) {
 		return response;

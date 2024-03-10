@@ -27,7 +27,12 @@
 	}
 </script>
 
-<h1 class="h1">Ping calculator</h1>
+<h1 class="h1">
+	<span
+		class="block bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500 bg-clip-text text-center text-transparent"
+		>Ping</span
+	> calculator
+</h1>
 <AccountForm on:message={handleAccountForm} />
 <PingComponent {gameData} />
 <LatestMatches {latestMatches} {fetchMatchApi} />
