@@ -1,38 +1,39 @@
-# create-svelte
+# Ping calculator
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+League of Legends ping statistics viewer built with SvelteKit, Svelte 5, Tailwind CSS 4 and Skeleton.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+Enter a Riot ID to fetch a player's latest matches, then pick a match to see how many of each ping type every player used.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Requires [Bun](https://bun.sh).
 
-```bash
-npm run dev
+Create a `.env` file with a Riot Games API key:
+
+```sh
+PRIVATE_API_KEY=your_riot_api_key_here
+```
+
+Then install dependencies and start the dev server:
+
+```sh
+bun install
+bun run dev
 
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+bun run dev -- --open
 ```
 
-## Building
+## Scripts
 
-To create a production version of your app:
+| Command           | Description                     |
+| ----------------- | ------------------------------- |
+| `bun run dev`     | Start the dev server            |
+| `bun run build`   | Create a production build       |
+| `bun run preview` | Preview the production build    |
+| `bun run check`   | Run `svelte-check`              |
+| `bun run test`    | Run unit tests with Vitest      |
+| `bun run lint`    | Check formatting and run ESLint |
+| `bun run format`  | Format all files with Prettier  |
 
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
