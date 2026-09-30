@@ -10,14 +10,23 @@
 	let latestMatches = $state<string[]>([]);
 	let gameData = $state<GameData>([]);
 
-	async function fetchMatchApi(match: string) {
-		const response = await fetch(`${MATCH_API}?${new URLSearchParams({ match })}`);
-		const data = await response.json();
-		gameData = gameDataSchema.parse(data.gameData);
+	function handleAccountForm(message: { puuid: string; latestMatches: string[] }) {
+		console.log('[page] account message received', message);
+		latestMatches = message.latestMatches;
 	}
 
-	function handleAccountForm(message: { puuid: string; latestMatches: string[] }) {
-		latestMatches = message.latestMatches;
+	async function fetchMatchApi(match: string) {
+		const matchUrl = `${MATCH_API}?${new URLSearchParams({ match })}`;
+		console.log('[page] fetching match', { url: matchUrl });
+		const response = await fetch(matchUrl);
+		console.log('[page] match response', { status: response.status });
+		const data = await response.json();
+		console.log('[page] match response body', data);
+		gameData = gameDataSchema.parse(data.gameData);
+		console.log('[page] parsed game data', {
+			participants: gameData.length,
+			players: gameData.map((player) => player.riotIdGameName)
+		});
 	}
 </script>
 

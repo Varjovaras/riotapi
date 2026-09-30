@@ -19,6 +19,7 @@
 	let errorMessage = $state('');
 
 	function showError(message: string) {
+		console.log('[AccountForm] showing error', message);
 		errorMessage = message;
 		setTimeout(() => {
 			errorMessage = '';
@@ -26,6 +27,10 @@
 	}
 
 	function handleAccountError(response: Response) {
+		console.log('[AccountForm] account request failed', {
+			status: response.status,
+			statusText: response.statusText
+		});
 		if (response.status === 404) {
 			showError(`Account not found for ${riotIdName}#${riotIdTag}`);
 		} else {
@@ -38,36 +43,48 @@
 
 	function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
+		console.log('[AccountForm] form submitted', { name: riotIdName, tag: riotIdTag });
 		fetchAccountApi();
 	}
 
 	async function fetchAccountApi() {
 		if (riotIdTag.startsWith('#')) {
+			console.log('[AccountForm] stripping leading # from tag');
 			riotIdTag = riotIdTag.slice(1);
 		}
-		const response = await fetch(
-			`${ACCOUNT_API}?${new URLSearchParams({ name: riotIdName, tag: riotIdTag })}`
-		);
+		const accountUrl = `${ACCOUNT_API}?${new URLSearchParams({ name: riotIdName, tag: riotIdTag })}`;
+		console.log('[AccountForm] fetching account', { url: accountUrl });
+		const response = await fetch(accountUrl);
+		console.log('[AccountForm] account response', { status: response.status });
 		if (response.status !== 200) {
 			handleAccountError(response);
 			return;
 		}
 		const data = await response.json();
+		console.log('[AccountForm] account response body', data);
 		puuid = z.string().parse(data);
+		console.log('[AccountForm] parsed puuid', puuid);
 		const latestMatches = await fetchListOfMatchIds();
+		console.log('[AccountForm] latest matches', latestMatches);
 		if (latestMatches.length === 0) {
+			console.log('[AccountForm] no matches found for puuid', puuid);
 			showError('No matches found');
 			showAccountForm = true;
 			return;
 		}
 		riotIdTag = '';
 		showAccountForm = false;
+		console.log('[AccountForm] notifying parent with account data', { puuid, latestMatches });
 		onmessage?.({ puuid, latestMatches });
 	}
 
 	async function fetchListOfMatchIds() {
-		const response = await fetch(`${MATCHES_BY_PUUID_API}?${new URLSearchParams({ puuid })}`);
+		const matchesUrl = `${MATCHES_BY_PUUID_API}?${new URLSearchParams({ puuid })}`;
+		console.log('[AccountForm] fetching match ids', { url: matchesUrl });
+		const response = await fetch(matchesUrl);
+		console.log('[AccountForm] match ids response', { status: response.status });
 		const data = await response.json();
+		console.log('[AccountForm] match ids response body', data);
 		return z.array(z.string()).parse(data);
 	}
 </script>
