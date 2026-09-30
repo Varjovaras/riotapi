@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+
 	interface Props {
+		puuid: string;
 		latestMatches: string[];
-		fetchMatchApi: (match: string) => Promise<void>;
+		selectedMatch?: string;
 	}
 
-	let { latestMatches, fetchMatchApi }: Props = $props();
+	let { puuid, latestMatches, selectedMatch = '' }: Props = $props();
 </script>
 
 {#if latestMatches.length > 0}
@@ -13,12 +16,15 @@
 	<p class="text-sm text-error-500">Games are in chronological order</p>
 	<div class="grid w-80 grid-cols-3 gap-4 pt-4 pb-4">
 		{#each latestMatches as match, i (match)}
-			<button
-				class="border-spacing-2 rounded border border-surface-400 bg-surface-50 px-4 py-2 font-semibold text-surface-800 shadow hover:bg-surface-300"
-				onclick={() => fetchMatchApi(match)}
+			<a
+				class="btn {match === selectedMatch ? 'preset-filled-primary-500' : 'preset-filled'}"
+				href={resolve(`/matches?${new URLSearchParams({ puuid, match })}`)}
+				aria-current={match === selectedMatch ? 'true' : undefined}
 			>
 				{i + 1}
-			</button>
+			</a>
 		{/each}
 	</div>
+{:else}
+	<p class="text-sm text-error-500">No matches found for this account</p>
 {/if}

@@ -26,7 +26,13 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 		gameMode: data.info?.gameMode,
 		participants: data.info?.participants?.length
 	});
-	const gameData = gameDataSchema.parse(data.info.participants);
+	// Riot removed the bait ping (patch 13.19) and now reports its replacement
+	// as retreatPings, so fall back to it when baitPings is missing.
+	const participants = data.info.participants.map((participant: Record<string, unknown>) => ({
+		...participant,
+		baitPings: participant.baitPings ?? participant.retreatPings ?? 0
+	}));
+	const gameData = gameDataSchema.parse(participants);
 	const participantIds = participantIdArraySchema.parse(data.metadata.participants);
 	console.log('[api/match] parsed match data', {
 		participants: gameData.length,

@@ -1,19 +1,11 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { z } from 'zod';
 
 	const ACCOUNT_API = '/api/account';
-	const MATCHES_BY_PUUID_API = '/api/matches-by-puuid';
-
-	interface AccountMessage {
-		puuid: string;
-		latestMatches: string[];
-	}
-
-	let { onmessage }: { onmessage?: (message: AccountMessage) => void } = $props();
 
 	let riotNameInput: HTMLInputElement | null = $state(null);
-	let puuid = $state('');
-	let showAccountForm = $state(true);
 	let riotIdName = $state('');
 	let riotIdTag = $state('');
 	let errorMessage = $state('');
@@ -62,30 +54,9 @@
 		}
 		const data = await response.json();
 		console.log('[AccountForm] account response body', data);
-		puuid = z.string().parse(data);
-		console.log('[AccountForm] parsed puuid', puuid);
-		const latestMatches = await fetchListOfMatchIds();
-		console.log('[AccountForm] latest matches', latestMatches);
-		if (latestMatches.length === 0) {
-			console.log('[AccountForm] no matches found for puuid', puuid);
-			showError('No matches found');
-			showAccountForm = true;
-			return;
-		}
-		riotIdTag = '';
-		showAccountForm = false;
-		console.log('[AccountForm] notifying parent with account data', { puuid, latestMatches });
-		onmessage?.({ puuid, latestMatches });
-	}
-
-	async function fetchListOfMatchIds() {
-		const matchesUrl = `${MATCHES_BY_PUUID_API}?${new URLSearchParams({ puuid })}`;
-		console.log('[AccountForm] fetching match ids', { url: matchesUrl });
-		const response = await fetch(matchesUrl);
-		console.log('[AccountForm] match ids response', { status: response.status });
-		const data = await response.json();
-		console.log('[AccountForm] match ids response body', data);
-		return z.array(z.string()).parse(data);
+		const puuid = z.string().parse(data);
+		console.log('[AccountForm] account found, navigating to matches', { puuid });
+		await goto(resolve(`/matches?${new URLSearchParams({ puuid })}`));
 	}
 </script>
 
@@ -95,33 +66,23 @@
 	</div>
 {/if}
 
-{#if showAccountForm}
-	<form class="mb-4 w-full max-w-md card bg-surface-100-900 p-6 shadow-md" onsubmit={handleSubmit}>
-		<label class="label mb-4">
-			<span class="label-text">Riot account name</span>
-			<input
-				class="input"
-				type="text"
-				placeholder="Account name"
-				bind:value={riotIdName}
-				bind:this={riotNameInput}
-			/>
-		</label>
-		<label class="label mb-6">
-			<span class="label-text">Tag</span>
-			<input class="input" type="text" placeholder="Riot id # tag" bind:value={riotIdTag} />
-			<span class="text-xs text-surface-700-300">For example: thebausffs #EUW</span>
-		</label>
-		<button class="btn w-full preset-filled-primary-500" type="submit">
-			Fetch account details
-		</button>
-	</form>
-{:else}
-	<button
-		class="mt-4 btn preset-tonal-surface"
-		type="button"
-		onclick={() => (showAccountForm = true)}
-	>
-		Fetch new account details
+<form class="mb-4 w-full max-w-md card bg-surface-100-900 p-6 shadow-md" onsubmit={handleSubmit}>
+	<label class="label mb-4">
+		<span class="label-text">Riot account name</span>
+		<input
+			class="input"
+			type="text"
+			placeholder="Account name"
+			bind:value={riotIdName}
+			bind:this={riotNameInput}
+		/>
+	</label>
+	<label class="label mb-6">
+		<span class="label-text">Tag</span>
+		<input class="input" type="text" placeholder="Riot id # tag" bind:value={riotIdTag} />
+		<span class="text-xs text-surface-700-300">For example: thebausffs #EUW</span>
+	</label>
+	<button class="btn w-full preset-filled-primary-500" type="submit">
+		Fetch account details
 	</button>
-{/if}
+</form>
