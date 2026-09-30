@@ -9,11 +9,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
-	font-family: 'Inter';
-	src: url('/fonts/Inter-VariableFont_slnt,wght.ttf');
+	font-family: 'Rubik';
+	src: url('/fonts/Rubik-VariableFont_wght.ttf');
+	font-weight: 300 900;
+	font-display: swap;
 }
 
 :root[data-theme='crimson'] {
-	--typo-base--font-family: 'Inter', sans-serif;
-	--typo-heading--font-family: 'Inter', sans-serif;
+	--typo-base--font-family: 'Rubik', sans-serif;
+	--typo-heading--font-family: 'Rubik', sans-serif;
 }
