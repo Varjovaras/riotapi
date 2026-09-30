@@ -42,7 +42,7 @@
 {#if gameData.length > 0}
 	<div class="w-3/4 pt-4 text-center">
 		{#if pingsByPlayer.length > 0}
-			<h3 class="font-sm text-red-500">Total {pingDisplayName} pings per player</h3>
+			<h3 class="font-sm text-error-500">Total {pingDisplayName} pings per player</h3>
 
 			<table class="w-full">
 				<tbody>
@@ -72,13 +72,13 @@
 			</table>
 		{/if}
 
-		<h2 class="mt-4 h2 text-red-500 shadow hover:bg-gray-900">
+		<h2 class="mt-4 h2 text-error-500 shadow hover:bg-surface-900">
 			Total amount of pings in the game {totalPings}
 		</h2>
 		<div class="grid grid-cols-2 gap-2">
 			{#each Object.entries(pings) as [pingKey, pingValue] (pingKey)}
 				<button
-					class="my-2 border-spacing-2 rounded border border-gray-400 bg-white px-4 py-2 font-semibold text-gray-800 shadow hover:bg-gray-300"
+					class="my-2 border-spacing-2 rounded border border-surface-400 bg-surface-50 px-4 py-2 font-semibold text-surface-800 shadow hover:bg-surface-300"
 					onclick={() => (pingType = pingKey as SinglePing)}
 					style="min-width: auto;"
 				>
