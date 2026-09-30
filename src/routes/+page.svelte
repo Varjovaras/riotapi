@@ -1,29 +1,23 @@
 <script lang="ts">
-	import type { GameData } from '../lib/utils/types';
-	import { gameDataSchema } from '../lib/schemas/gameDataSchema';
+	import type { GameData } from '$lib/utils/types';
+	import { gameDataSchema } from '$lib/schemas/gameDataSchema';
 	import AccountForm from '$lib/components/AccountForm.svelte';
 	import LatestMatches from '$lib/components/LatestMatches.svelte';
 	import PingComponent from '$lib/components/PingComponent.svelte';
 
-	const MATCH_API = `/api/match/`;
+	const MATCH_API = '/api/match';
 
-	let puuid = '';
-	let matchId = '';
-	let latestMatches: string[] = [];
-	let gameData: GameData = [];
+	let latestMatches = $state<string[]>([]);
+	let gameData = $state<GameData>([]);
 
 	async function fetchMatchApi(match: string) {
-		const response = await fetch(`${MATCH_API}?match=${match}`);
+		const response = await fetch(`${MATCH_API}?${new URLSearchParams({ match })}`);
 		const data = await response.json();
-		console.log(data);
-		const gameDataFromServer = gameDataSchema.parse(data.gameData);
-		gameData = gameDataFromServer;
-		matchId = match;
+		gameData = gameDataSchema.parse(data.gameData);
 	}
 
-	function handleAccountForm(event: CustomEvent<{ puuid: string; latestMatches: string[] }>) {
-		puuid = event.detail.puuid;
-		latestMatches = event.detail.latestMatches;
+	function handleAccountForm(message: { puuid: string; latestMatches: string[] }) {
+		latestMatches = message.latestMatches;
 	}
 </script>
 
@@ -33,6 +27,6 @@
 		>Ping</span
 	> calculator
 </h1>
-<AccountForm on:message={handleAccountForm} />
+<AccountForm onmessage={handleAccountForm} />
 <PingComponent {gameData} />
 <LatestMatches {latestMatches} {fetchMatchApi} />

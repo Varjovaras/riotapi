@@ -1,5 +1,9 @@
-<script>
-	import '../app.pcss';
+<script lang="ts">
+	import '../app.css';
+
+	import type { Snippet } from 'svelte';
+
+	let { children }: { children: Snippet } = $props();
 </script>
 
 <svelte:head>
@@ -7,8 +11,5 @@
 </svelte:head>
 
 <div class="flex min-h-screen flex-col items-center justify-center">
-	<slot />
+	{@render children()}
 </div>
-
-<style lang="postcss">
-</style>
