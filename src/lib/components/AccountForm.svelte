@@ -90,50 +90,35 @@
 </script>
 
 {#if errorMessage}
-	<div
-		class="my-4 mb-4 rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-gray-800 dark:text-red-400"
-		role="alert"
-	>
+	<div class="mb-4 card preset-tonal-error p-4 text-sm" role="alert">
 		<span class="font-medium">{errorMessage}</span>
 	</div>
 {/if}
 
 {#if showAccountForm}
-	<form class="mb-4 rounded px-8 pt-6 pb-2 shadow-md" onsubmit={handleSubmit}>
-		<div class="mb-4">
-			<label class="mb-2 block text-sm font-bold text-gray-700" for="username">
-				Riot account name
-			</label>
+	<form class="mb-4 w-full max-w-md card bg-surface-100-900 p-6 shadow-md" onsubmit={handleSubmit}>
+		<label class="label mb-4">
+			<span class="label-text">Riot account name</span>
 			<input
-				class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-				id="username"
+				class="input"
 				type="text"
 				placeholder="Account name"
 				bind:value={riotIdName}
 				bind:this={riotNameInput}
 			/>
-		</div>
-		<div class="mb-6">
-			<label class="mb-2 block text-sm font-bold text-gray-700" for="tag">Tag</label>
-			<input
-				class="focus:shadow-outline mb-3 w-full appearance-none rounded border border-red-500 px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-				id="tag"
-				type="text"
-				placeholder="Riot id # tag"
-				bind:value={riotIdTag}
-			/>
-			<p class="text-xs text-red-500 italic">For example: thebausffs #EUW</p>
-		</div>
-		<button
-			class="w-full rounded border border-gray-400 bg-white px-4 py-2 text-gray-800 shadow hover:bg-gray-300"
-			type="submit"
-		>
+		</label>
+		<label class="label mb-6">
+			<span class="label-text">Tag</span>
+			<input class="input" type="text" placeholder="Riot id # tag" bind:value={riotIdTag} />
+			<span class="text-xs text-surface-700-300">For example: thebausffs #EUW</span>
+		</label>
+		<button class="btn w-full preset-filled-primary-500" type="submit">
 			Fetch account details
 		</button>
 	</form>
 {:else}
 	<button
-		class="bg-grey-100 text-gray300 mt-4 rounded border border-gray-400 px-8 py-2 font-semibold shadow hover:bg-gray-800"
+		class="mt-4 btn preset-tonal-surface"
 		type="button"
 		onclick={() => (showAccountForm = true)}
 	>
