@@ -16,7 +16,7 @@ const VIEW_ROUTES = {
 } as const;
 
 /**
- * Url for a view of an account, e.g. `/matches/euw/Silmu/EUW?match=EUW1_123`.
+ * Url for a view of an account, e.g. `/matches/euw/thebausffs/EUW?match=EUW1_123`.
  * Values are encoded here because `resolve` inserts route params as-is.
  */
 export function accountViewHref(
