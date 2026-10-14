@@ -6,43 +6,20 @@
 	const ACCOUNT_API = '/api/account';
 
 	let riotNameInput: HTMLInputElement | null = $state(null);
-	let riotIdName = $state('');
-	let riotIdTag = $state('');
+	let riotUsername = $state('');
 	let errorMessage = $state('');
-
-	function showError(message: string) {
-		console.log('[AccountForm] showing error', message);
-		errorMessage = message;
-		setTimeout(() => {
-			errorMessage = '';
-		}, 5000);
-	}
-
-	function handleAccountError(response: Response) {
-		console.log('[AccountForm] account request failed', {
-			status: response.status,
-			statusText: response.statusText
-		});
-		if (response.status === 404) {
-			showError(`Account not found for ${riotIdName}#${riotIdTag}`);
-		} else {
-			showError(response.statusText);
-		}
-		riotIdName = '';
-		riotIdTag = '';
-		riotNameInput?.focus();
-	}
 
 	function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
-		console.log('[AccountForm] form submitted', { name: riotIdName, tag: riotIdTag });
+		console.log('[AccountForm] form submitted', { name: riotUsername });
 		fetchAccountApi();
 	}
 
 	async function fetchAccountApi() {
-		if (riotIdTag.startsWith('#')) {
-			console.log('[AccountForm] stripping leading # from tag');
-			riotIdTag = riotIdTag.slice(1);
+		const [riotIdName, riotIdTag, ...rest] = riotUsername.trim().split('#');
+		if (!riotIdName || !riotIdTag || rest.length > 0) {
+			showError('Enter your Riot ID as name#tag');
+			return;
 		}
 		const accountUrl = `${ACCOUNT_API}?${new URLSearchParams({ name: riotIdName, tag: riotIdTag })}`;
 		console.log('[AccountForm] fetching account', { url: accountUrl });
@@ -58,6 +35,28 @@
 		console.log('[AccountForm] account found, navigating to matches', { puuid });
 		await goto(resolve(`/matches?${new URLSearchParams({ puuid })}`));
 	}
+
+	function handleAccountError(response: Response) {
+		console.log('[AccountForm] account request failed', {
+			status: response.status,
+			statusText: response.statusText
+		});
+		if (response.status === 404) {
+			showError(`Account not found for ${riotUsername}`);
+		} else {
+			showError(response.statusText);
+		}
+
+		riotNameInput?.focus();
+	}
+
+	function showError(message: string) {
+		console.log('[AccountForm] showing error', message);
+		errorMessage = message;
+		setTimeout(() => {
+			errorMessage = '';
+		}, 5000);
+	}
 </script>
 
 {#if errorMessage}
@@ -68,20 +67,17 @@
 
 <form class="mb-4 w-full max-w-md card bg-surface-100-900 p-6 shadow-md" onsubmit={handleSubmit}>
 	<label class="label mb-4">
-		<span class="label-text">Riot account name</span>
+		<span class="label-text text-xs">Riot account name</span>
+		<span class="text-shadow-xs– text-xs text-primary-500">For example thebausffs#EUW</span>
 		<input
 			class="input"
 			type="text"
 			placeholder="Account name"
-			bind:value={riotIdName}
+			bind:value={riotUsername}
 			bind:this={riotNameInput}
 		/>
 	</label>
-	<label class="label mb-6">
-		<span class="label-text">Tag</span>
-		<input class="input" type="text" placeholder="Riot id # tag" bind:value={riotIdTag} />
-		<span class="text-xs text-surface-700-300">For example: thebausffs #EUW</span>
-	</label>
+
 	<button class="btn w-full preset-filled-primary-500" type="submit">
 		Fetch account details
 	</button>
