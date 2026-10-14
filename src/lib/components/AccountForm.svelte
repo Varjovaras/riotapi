@@ -1,5 +1,6 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
+    import FetchButton from '#lib/components/FetchButton.svelte';
     import { accountViewHref } from '#lib/utils/hrefs.js';
     import { REGIONS, type Region } from '#lib/utils/regions.js';
 
@@ -60,7 +61,5 @@
         />
     </label>
 
-    <button class="btn w-full bg-primary-800 text-primary-contrast-500" type="submit">
-        Fetch account details
-    </button>
+    <FetchButton type="submit" class="w-full">Fetch account details</FetchButton>
 </form>
