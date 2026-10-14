@@ -26,14 +26,16 @@ bun run dev -- --open
 
 ## Scripts
 
-| Command           | Description                     |
-| ----------------- | ------------------------------- |
-| `bun run dev`     | Start the dev server            |
-| `bun run build`   | Create a production build       |
-| `bun run preview` | Preview the production build    |
-| `bun run check`   | Run `svelte-check`              |
-| `bun run test`    | Run unit tests with Vitest      |
-| `bun run lint`    | Check formatting and run ESLint |
-| `bun run format`  | Format all files with Prettier  |
+| Command             | Description                   |
+| ------------------- | ----------------------------- |
+| `bun run dev`       | Start the dev server          |
+| `bun run build`     | Create a production build     |
+| `bun run preview`   | Preview the production build  |
+| `bun run check`     | Run `svelte-check`            |
+| `bun run test`      | Run unit tests with Vitest    |
+| `bun run lint`      | Lint with Oxlint              |
+| `bun run lint:fix`  | Lint and auto-fix with Oxlint |
+| `bun run fmt`       | Format all files with Oxfmt   |
+| `bun run fmt:check` | Check formatting with Oxfmt   |
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
