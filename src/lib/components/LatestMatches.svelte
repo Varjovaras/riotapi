@@ -5,9 +5,11 @@
         puuid: string;
         latestMatches: string[];
         selectedMatch?: string;
+        /** Page the match links point at, so the url keeps the account/game. */
+        route?: 'matches' | 'pings';
     }
 
-    let { puuid, latestMatches, selectedMatch = '' }: Props = $props();
+    let { puuid, latestMatches, selectedMatch = '', route = 'matches' }: Props = $props();
 </script>
 
 {#if latestMatches.length > 0}
@@ -20,7 +22,7 @@
                 class="btn {match === selectedMatch
                     ? 'preset-filled-primary-500'
                     : 'preset-filled'}"
-                href={resolve(`matches?${new URLSearchParams({ puuid, match })}`)}
+                href={resolve(`${route}?${new URLSearchParams({ puuid, match })}`)}
                 aria-current={match === selectedMatch ? 'true' : undefined}
             >
                 {i + 1}
