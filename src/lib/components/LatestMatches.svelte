@@ -1,15 +1,24 @@
 <script lang="ts">
-    import { resolve } from '$app/paths';
+    import { accountViewHref, type View } from '#lib/utils/hrefs.js';
 
     interface Props {
-        puuid: string;
+        region: string;
+        name: string;
+        tag: string;
         latestMatches: string[];
         selectedMatch?: string;
-        /** Page the match links point at, so the url keeps the account/game. */
-        route?: 'matches' | 'pings';
+        /** View the match links point at, so the url keeps account + game. */
+        route?: View;
     }
 
-    let { puuid, latestMatches, selectedMatch = '', route = 'matches' }: Props = $props();
+    let {
+        region,
+        name,
+        tag,
+        latestMatches,
+        selectedMatch = '',
+        route = 'matches'
+    }: Props = $props();
 </script>
 
 {#if latestMatches.length > 0}
@@ -22,7 +31,7 @@
                 class="btn {match === selectedMatch
                     ? 'preset-filled-primary-500'
                     : 'preset-filled'}"
-                href={resolve(`${route}?${new URLSearchParams({ puuid, match })}`)}
+                href={accountViewHref(route, { region, name, tag }, { match })}
                 aria-current={match === selectedMatch ? 'true' : undefined}
             >
                 {i + 1}

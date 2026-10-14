@@ -1,4 +1,5 @@
 import { PRIVATE_API_KEY } from '$app/env/private';
+import { isRegion, regionalHost } from '#lib/utils/regions.js';
 import type { RequestHandler } from './$types';
 
 /**
@@ -6,14 +7,19 @@ import type { RequestHandler } from './$types';
  */
 export const GET: RequestHandler = async ({ fetch, url }) => {
     const puuid = url.searchParams.get('puuid');
+    const region = url.searchParams.get('region')?.toLowerCase();
     const start = url.searchParams.get('start') || '0';
     const count = url.searchParams.get('count') || '20';
-    console.log('[api/matches-by-puuid] request received', { puuid, start, count });
-    if (!puuid) {
-        console.log('[api/matches-by-puuid] missing puuid query parameter');
-        return new Response('No puuid in url', { status: 400 });
+    console.log('[api/matches-by-puuid] request received', { puuid, region, start, count });
+    if (!puuid || !region) {
+        console.log('[api/matches-by-puuid] missing puuid or region query parameter');
+        return new Response('No puuid or region in url', { status: 400 });
     }
-    const MATCH_V5_API_URL = `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${PRIVATE_API_KEY}`;
+    if (!isRegion(region)) {
+        console.log('[api/matches-by-puuid] unknown region', { region });
+        return new Response(`Unknown region "${region}"`, { status: 400 });
+    }
+    const MATCH_V5_API_URL = `https://${regionalHost(region)}/lol/match/v5/matches/by-puuid/${puuid}/ids?start=${start}&count=${count}&api_key=${PRIVATE_API_KEY}`;
     console.log('[api/matches-by-puuid] calling Riot API', {
         path: new URL(MATCH_V5_API_URL).pathname,
         start,

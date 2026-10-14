@@ -2,17 +2,23 @@ import type { RequestHandler } from './$types';
 import { PRIVATE_API_KEY } from '$app/env/private';
 import { gameDataSchema } from '#lib/schemas/gameDataSchema.js';
 import { participantIdArraySchema } from '#lib/schemas/participantIdArraySchema.js';
+import { isRegion, regionalHost } from '#lib/utils/regions.js';
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
     const matchId = url.searchParams.get('match');
-    console.log('[api/match] request received', { matchId });
-    if (!matchId) {
-        console.log('[api/match] missing match query parameter');
-        return new Response('No match id parameter in url', {
+    const region = url.searchParams.get('region')?.toLowerCase();
+    console.log('[api/match] request received', { matchId, region });
+    if (!matchId || !region) {
+        console.log('[api/match] missing match or region query parameter');
+        return new Response('No match id or region parameter in url', {
             status: 400
         });
     }
-    const API_URL = `https://europe.api.riotgames.com/lol/match/v5/matches/${matchId}?api_key=${PRIVATE_API_KEY}`;
+    if (!isRegion(region)) {
+        console.log('[api/match] unknown region', { region });
+        return new Response(`Unknown region "${region}"`, { status: 400 });
+    }
+    const API_URL = `https://${regionalHost(region)}/lol/match/v5/matches/${matchId}?api_key=${PRIVATE_API_KEY}`;
     console.log('[api/match] calling Riot API', { path: new URL(API_URL).pathname });
     const response = await fetch(API_URL);
     console.log('[api/match] Riot API responded', { status: response.status });
