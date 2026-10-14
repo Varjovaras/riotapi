@@ -10,7 +10,9 @@
     const route = $derived(page.url.pathname.startsWith('/pings') ? 'pings' : 'matches');
 </script>
 
-<a class="btn preset-filled-primary-500" href={resolve('/')}>Fetch new account details</a>
+<!-- <a class="btn bg-primary-900 text-primary-contrast-700" href={resolve('/')}
+    >Fetch new account details</a
+> -->
 <LatestMatches
     region={data.region}
     name={data.name}

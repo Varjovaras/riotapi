@@ -60,7 +60,7 @@
         />
     </label>
 
-    <button class="btn w-full preset-filled-primary-500" type="submit">
+    <button class="btn w-full bg-primary-800 text-primary-contrast-500" type="submit">
         Fetch account details
     </button>
 </form>

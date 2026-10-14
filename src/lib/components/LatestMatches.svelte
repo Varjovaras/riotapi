@@ -29,7 +29,7 @@
         {#each latestMatches as match, i (match)}
             <a
                 class="btn {match === selectedMatch
-                    ? 'preset-filled-primary-500'
+                    ? 'bg-primary-700 text-primary-contrast-700'
                     : 'preset-filled'}"
                 href={accountViewHref(route, { region, name, tag }, { match })}
                 aria-current={match === selectedMatch ? 'true' : undefined}
