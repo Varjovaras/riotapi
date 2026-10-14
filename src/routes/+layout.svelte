@@ -2,7 +2,7 @@
 	import '../app.css';
 
 	import type { Snippet } from 'svelte';
-	import ThemeSelector from '$lib/components/ThemeSelector.svelte';
+	import ThemeSelector from '#lib/components/ThemeSelector.svelte';
 
 	let { children }: { children: Snippet } = $props();
 </script>

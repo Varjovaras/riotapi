@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DEFAULT_THEME, THEMES, isTheme, type Theme } from '$lib/utils/themes';
+	import { DEFAULT_THEME, THEMES, isTheme, type Theme } from '#lib/utils/themes.js';
 
 	const STORAGE_KEY = 'theme';
 

@@ -4,8 +4,8 @@
 		getPingDisplayName,
 		getShortPingDisplayName,
 		getTotalPingsForType
-	} from '$lib/utils/pingHelpers';
-	import type { GameData, NumberOfPings, PlayerPingData, SinglePing } from '$lib/utils/types';
+	} from '#lib/utils/pingHelpers.js';
+	import type { GameData, NumberOfPings, PlayerPingData, SinglePing } from '#lib/utils/types.js';
 
 	let { gameData }: { gameData: GameData } = $props();
 

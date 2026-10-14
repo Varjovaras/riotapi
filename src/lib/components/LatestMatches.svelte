@@ -18,7 +18,7 @@
 		{#each latestMatches as match, i (match)}
 			<a
 				class="btn {match === selectedMatch ? 'preset-filled-primary-500' : 'preset-filled'}"
-				href={resolve(`/matches?${new URLSearchParams({ puuid, match })}`)}
+				href={resolve(`matches?${new URLSearchParams({ puuid, match })}`)}
 				aria-current={match === selectedMatch ? 'true' : undefined}
 			>
 				{i + 1}

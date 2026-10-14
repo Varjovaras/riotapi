@@ -16,9 +16,10 @@
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@skeletonlabs/skeleton": "^5.0.1",
-		"@sveltejs/adapter-auto": "^7.0.1",
-		"@sveltejs/adapter-vercel": "^6.3.4",
-		"@sveltejs/kit": "^2.70.3",
+		"@sveltejs/adapter-auto": "^8.0.0",
+		"@sveltejs/adapter-vercel": "^7.0.0",
+		"@sveltejs/kit": "^3.0.0",
+		"@sveltejs/load-config": "^0.2.2",
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/vite": "^4.3.3",
@@ -41,5 +42,9 @@
 	},
 	"dependencies": {
 		"zod": "^4.6.5"
+	},
+	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*"
 	}
 }

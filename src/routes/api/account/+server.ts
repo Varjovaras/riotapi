@@ -1,6 +1,5 @@
 import type { RequestHandler } from './$types';
-import { PRIVATE_API_KEY } from '$env/static/private';
-import { json } from '@sveltejs/kit';
+import { PRIVATE_API_KEY } from '$app/env/private';
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
 	const riotIdName = url.searchParams.get('name');
@@ -29,5 +28,5 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 		tagLine: data.tagLine,
 		puuid: data.puuid
 	});
-	return json(data.puuid);
+	return Response.json(data.puuid);
 };

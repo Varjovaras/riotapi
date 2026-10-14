@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import LatestMatches from '$lib/components/LatestMatches.svelte';
-	import PingComponent from '$lib/components/PingComponent.svelte';
+	import LatestMatches from '#lib/components/LatestMatches.svelte';
+	import PingComponent from '#lib/components/PingComponent.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();

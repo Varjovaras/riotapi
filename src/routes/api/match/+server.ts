@@ -1,8 +1,7 @@
 import type { RequestHandler } from './$types';
-import { PRIVATE_API_KEY } from '$env/static/private';
-import { json } from '@sveltejs/kit';
-import { gameDataSchema } from '$lib/schemas/gameDataSchema';
-import { participantIdArraySchema } from '$lib/schemas/participantIdArraySchema';
+import { PRIVATE_API_KEY } from '$app/env/private';
+import { gameDataSchema } from '#lib/schemas/gameDataSchema.js';
+import { participantIdArraySchema } from '#lib/schemas/participantIdArraySchema.js';
 
 export const GET: RequestHandler = async ({ fetch, url }) => {
 	const matchId = url.searchParams.get('match');
@@ -39,5 +38,5 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 		players: gameData.map((player) => `${player.riotIdGameName} (${player.teamId})`),
 		participantIds
 	});
-	return json({ gameData, participantIds });
+	return Response.json({ gameData, participantIds });
 };

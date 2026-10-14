@@ -33,7 +33,7 @@
 		console.log('[AccountForm] account response body', data);
 		const puuid = z.string().parse(data);
 		console.log('[AccountForm] account found, navigating to matches', { puuid });
-		await goto(resolve(`/matches?${new URLSearchParams({ puuid })}`));
+		await goto(resolve(`matches?${new URLSearchParams({ puuid })}`));
 	}
 
 	function handleAccountError(response: Response) {

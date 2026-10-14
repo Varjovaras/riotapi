@@ -1,5 +1,4 @@
-import { PRIVATE_API_KEY } from '$env/static/private';
-import { json } from '@sveltejs/kit';
+import { PRIVATE_API_KEY } from '$app/env/private';
 import type { RequestHandler } from './$types';
 
 /**
@@ -31,5 +30,5 @@ export const GET: RequestHandler = async ({ fetch, url }) => {
 		amount: data.length,
 		matchIds: data
 	});
-	return json(data);
+	return Response.json(data);
 };

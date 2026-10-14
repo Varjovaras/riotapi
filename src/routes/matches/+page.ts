@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { z } from 'zod';
-import { gameDataSchema } from '$lib/schemas/gameDataSchema';
-import type { GameData } from '$lib/utils/types';
+import { gameDataSchema } from '#lib/schemas/gameDataSchema.js';
+import type { GameData } from '#lib/utils/types.js';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch, url }) => {
