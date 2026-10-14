@@ -31,7 +31,7 @@ bun run dev -- --open
 | `bun run dev`       | Start the dev server          |
 | `bun run build`     | Create a production build     |
 | `bun run preview`   | Preview the production build  |
-| `bun run start`     | Run the built Node server     |
+| `bun run start`     | Run the built Bun server      |
 | `bun run check`     | Run `svelte-check`            |
 | `bun run test`      | Run unit tests with Vitest    |
 | `bun run lint`      | Lint with Oxlint              |
