@@ -1,13 +1,13 @@
 # yaml-language-server: $schema=https://lefthook.dev/schema.json
 
 pre-commit:
-  jobs:
-    - name: fmt
-      run: bun run fmt:check
-    - name: lint
-      run: bun run lint
+    jobs:
+        - name: fmt
+          run: bun run fmt:check
+        - name: lint
+          run: bun run lint
 
 pre-push:
-  jobs:
-    - name: build
-      run: bun run build
+    jobs:
+        - name: build
+          run: bun run build

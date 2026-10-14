@@ -6,18 +6,18 @@ import type { pingSchema } from '../schemas/pingSchema';
 
 export type SinglePing = keyof z.infer<typeof pingSchema>;
 export type NumberOfPings = {
-	[K in SinglePing]: number;
+    [K in SinglePing]: number;
 };
 
 export type SinglePingKeys = [keyof NumberOfPings];
 export type TotalNumberOfPings = NumberOfPings & {
-	totalPings: number;
+    totalPings: number;
 };
 
 export type PlayerPingData = {
-	name: string;
-	teamId: number;
-	amountOfPings: number;
+    name: string;
+    teamId: number;
+    amountOfPings: number;
 };
 export type TotalAmountOfSinglePing = PlayerPingData[] | null;
 

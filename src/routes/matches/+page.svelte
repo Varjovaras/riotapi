@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
-	import LatestMatches from '#lib/components/LatestMatches.svelte';
-	import PingComponent from '#lib/components/PingComponent.svelte';
-	import type { PageProps } from './$types';
+    import { resolve } from '$app/paths';
+    import LatestMatches from '#lib/components/LatestMatches.svelte';
+    import PingComponent from '#lib/components/PingComponent.svelte';
+    import type { PageProps } from './$types';
 
-	let { data }: PageProps = $props();
+    let { data }: PageProps = $props();
 </script>
 
 <h1 class="py-16 text-center h1"><span class="text-primary-500">Ping</span> calculator</h1>
